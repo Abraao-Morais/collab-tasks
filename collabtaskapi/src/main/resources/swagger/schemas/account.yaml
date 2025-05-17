@@ -1,0 +1,50 @@
+AccountResponse:
+  type: object
+  properties:
+    id:
+      type: integer
+      example: 1
+    name:
+      type: string
+      maxLength: 100
+      example: "Alice Johnson"
+    email:
+      type: string
+      maxLength: 150
+      format: email
+      example: "alice@example.com"
+    profile_photo_url:
+      type: string
+      format: uri
+      nullable: true
+      example: "https://www.thispersondoesnotexist.com"
+    is_active:
+      type: boolean
+      example: true
+
+AccountRequest:
+  type: object
+  required:
+    - name
+    - email
+    - password
+  properties:
+    name:
+      type: string
+      maxLength: 100
+      example: "Bob Smith"
+    email:
+      type: string
+      maxLength: 150
+      format: email
+      example: "bob@example.com"
+    password:
+      type: string
+      minLength: 8
+      maxLength: 60
+      example: "$2a$10$7q8b9uGz...hashedpassword..."
+    profile_photo_url:
+      type: string
+      format: uri
+      nullable: true
+      example: "https://www.thispersondoesnotexist.com"

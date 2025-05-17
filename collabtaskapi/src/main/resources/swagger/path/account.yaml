@@ -1,0 +1,35 @@
+post:
+  tags:
+    - account
+  summary: Create a new account
+  description: Adds a new account to the list.
+  operationId: createNewAccount
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../schemas/account.yaml#/AccountRequest'
+  responses:
+    '200':
+      description: Account successfully created
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/account.yaml#/AccountResponse'
+
+get:
+  tags:
+    - account
+  summary: Retrieve all accounts
+  description: Returns a list of all registered accounts in the system.
+  operationId: listAllAccounts
+  responses:
+    '200':
+      description: A list of accounts
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '../schemas/account.yaml#/AccountResponse'

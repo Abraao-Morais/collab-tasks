@@ -1,0 +1,65 @@
+get:
+  tags:
+    - account
+  summary: Get account by id
+  description: Retrieves the details of a account using its unique identifier.
+  operationId: getAccountById
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+  responses:
+    '200':
+      description: Account found
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/account.yaml#/AccountResponse'
+    '404':
+      description: Account not found
+
+delete:
+  tags:
+    - account
+  summary: Disable account by id
+  description: Disable account from the system by id.
+  operationId: deleteAccountByID
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+  responses:
+    '204':
+      description: Account successfully deleted
+
+put:
+  tags:
+    - account
+  summary: Update account
+  description: Updates the information of an existing account.
+  operationId: updateAccountByID
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../schemas/account.yaml#/AccountRequest'
+  responses:
+    '200':
+      description: Account successfully updated
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/account.yaml#/AccountResponse'
+    '404':
+      description: Account not found

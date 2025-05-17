@@ -9,5 +9,7 @@ servers:
     description: Local Server
 
 paths:
-  /test:
-    $ref: './path/test.yaml'
+  /account:
+    $ref: './path/account.yaml'
+  /account/{id}:
+    $ref: './path/account-id.yaml'
