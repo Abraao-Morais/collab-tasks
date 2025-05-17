@@ -1,0 +1,13 @@
+openapi: 3.0.1
+info:
+  title: collab-task
+  description: Collaborative Task Management System
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080
+    description: Local Server
+
+paths:
+  /test:
+    $ref: './path/test.yaml'
