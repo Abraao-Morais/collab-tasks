@@ -1,0 +1,84 @@
+.wrapper {
+  width: 420px;
+  border-radius: 10px;
+  padding: 30px 40px;
+  background: rgb(42, 51, 75, 0.5);
+  border: solid 2px rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+}
+
+.wrapper form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.wrapper h1 {
+  font-size: 36px;
+  text-align: center;
+}
+
+.wrapper .input-box {
+  position: relative;
+  width: 100%;
+  height: 50px;
+  margin: 30px 0 15px 0;
+}
+
+.input-box input {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  outline: none;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 40px;
+  font-size: 16px;
+  padding: 20px 45px 20px 20px;
+}
+
+.input-box input::placeholder {
+  color: var(--white-color);
+}
+
+.input-box .icon {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 16px;
+}
+
+.wrapper button {
+  width: 100%;
+  height: 45px;
+  background: var(--white-color);
+  border: none;
+  outline: none;
+  border-radius: 40px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  font-size: 16px;
+  color: var(--black-color);
+  font-weight: 700;
+}
+
+.wrapper .register {
+  font-size: 14.5px;
+  text-align: center;
+  margin: 20px 0 15px;
+}
+
+.register p a {
+  color: var(--white-color);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.register p a:hover {
+  text-decoration: underline;
+}
+
+.error {
+  margin: 5px;
+}
