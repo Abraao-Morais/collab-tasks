@@ -1,5 +1,12 @@
 @import url("https://fonts.googleapis.com/css2?family-Poppins:wght@400;600;700;display=swap");
 
+@font-face {
+  font-family: "title";
+  src: url("../assets/fonts/Accasia_Demo.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -14,8 +21,8 @@
   --tertiary-color: #f4f3ee;
   --white-color: #ffffff;
   --black-color: #000000;
-  --error-color: #ff0000;
   --primary-font: "Poppins", sans-serif;
+  --title-font: "title", sans-serif ;
 }
 
 main {

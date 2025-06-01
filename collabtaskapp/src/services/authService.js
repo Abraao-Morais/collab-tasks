@@ -1,4 +1,4 @@
-import { PATH, post } from "./apiService";
+import { PATH, post } from "./ApiService";
 
 export async function login(credentials) {
   const response = await post(
