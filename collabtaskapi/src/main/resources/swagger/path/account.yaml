@@ -11,7 +11,7 @@ post:
         schema:
           $ref: '../schemas/account.yaml#/AccountRequest'
   responses:
-    '200':
+    '201':
       description: Account successfully created
       content:
         application/json:

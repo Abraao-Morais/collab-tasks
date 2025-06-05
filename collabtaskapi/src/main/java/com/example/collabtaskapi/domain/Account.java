@@ -1,5 +1,7 @@
 package com.example.collabtaskapi.domain;
 
+import java.util.Objects;
+
 public class Account {
     private Integer id;
 
@@ -71,5 +73,18 @@ public class Account {
 
     public void setActive(boolean active) {
         isActive = active;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Account account = (Account) o;
+        return isActive == account.isActive && Objects.equals(id, account.id) && Objects.equals(name, account.name) && Objects.equals(email, account.email) && Objects.equals(password, account.password) && Objects.equals(profilePhotoUrl, account.profilePhotoUrl);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, email, password, profilePhotoUrl, isActive);
     }
 }

@@ -1,0 +1,37 @@
+post:
+  tags:
+    - task
+  summary: Create a new task
+  description: Adds a new task to the list.
+  operationId: createNewTask
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../schemas/task.yaml#/TaskRequest'
+  responses:
+    '200':
+      description: Account successfully created
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/task.yaml#/TaskResponse'
+
+get:
+  summary: Listar tarefas atribuídas a um usuário
+  parameters:
+    - in: query
+      name: assignedTo
+      required: true
+      schema:
+        type: integer
+  responses:
+    '200':
+      description: Lista de tarefas atribuídas
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '../schemas/task.yaml#/TaskResponse'

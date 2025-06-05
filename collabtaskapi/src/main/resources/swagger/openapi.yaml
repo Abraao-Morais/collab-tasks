@@ -13,3 +13,8 @@ paths:
     $ref: './path/account.yaml'
   /account/{id}:
     $ref: './path/account-id.yaml'
+
+  /task:
+    $ref: './path/task.yaml'
+  /task/{id}:
+    $ref: './path/task-id.yaml'
