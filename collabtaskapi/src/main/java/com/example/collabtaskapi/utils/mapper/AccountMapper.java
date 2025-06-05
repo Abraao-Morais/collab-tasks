@@ -15,6 +15,7 @@ public interface AccountMapper {
     Account jpaAccountEntityToAccount(JpaAccountEntity jpaAccountEntity);
     Account accountRequestToAccount(AccountRequest accountRequest);
     AccountResponse accountToAccountResponse(Account account);
+    JpaAccountEntity accountToJpaAccountEntity(Account account);
     default String map(URI uri) {
         return uri != null ? uri.toString() : null;
     }

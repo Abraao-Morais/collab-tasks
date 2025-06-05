@@ -1,0 +1,58 @@
+get:
+  summary: Obter detalhes de uma tarefa
+  operationId: getTaskById
+  parameters:
+    - in: path
+      name: id
+      required: true
+      schema:
+        type: integer
+  responses:
+    '200':
+      description: Detalhes da tarefa
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/task.yaml#/TaskResponse'
+    '404':
+      description: Tarefa não encontrada
+
+put:
+  summary: Atualizar uma tarefa
+  operationId: updateTaskById
+  parameters:
+    - in: path
+      name: id
+      required: true
+      schema:
+        type: integer
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../schemas/task.yaml#/TaskRequest'
+  responses:
+    '200':
+      description: Tarefa atualizada com sucesso
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/task.yaml#/TaskResponse'
+    '404':
+      description: Tarefa não encontrada
+
+delete:
+  summary: Remover uma tarefa
+  operationId: deleteTaskById
+  parameters:
+    - in: path
+      name: id
+      required: true
+      schema:
+        type: integer
+  responses:
+    '204':
+      description: Tarefa removida com sucesso
+    '404':
+      description: Tarefa não encontrada
