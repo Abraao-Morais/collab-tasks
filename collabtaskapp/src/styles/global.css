@@ -1,0 +1,46 @@
+@import url("https://fonts.googleapis.com/css2?family-Poppins:wght@400;600;700;display=swap");
+
+@font-face {
+  font-family: "title";
+  src: url("../assets/fonts/Accasia_Demo.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: var(--primary-font);
+  color: var(--white-color);
+}
+
+:root {
+  --primary-color: #131e2f;
+  --secondary-color: #3a89ff;
+  --tertiary-color: #f4f3ee;
+  --white-color: #ffffff;
+  --black-color: #000000;
+  --primary-font: "Poppins", sans-serif;
+  --title-font: "title", sans-serif ;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: var(--black-color);
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  background-color: var(--black-color);
+}
+
+::-webkit-scrollbar-thumb {
+  width: 8px;
+  border-radius: 2px;
+  background-color: var(--error-color);
+}
