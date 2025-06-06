@@ -9,63 +9,58 @@ import com.example.collabtaskapi.dto.TaskRequest;
 import com.example.collabtaskapi.dto.TaskResponse;
 
 import static com.example.collabtaskapi.domain.enums.Status.TO_DO;
-
 public class TaskFactory {
 
-    public static Task taskFactory(){
-        Account account = new Account();
+    private static final Integer ID = 1;
+    private static final String TASK_TITLE = "Titulo da tarefa 1";
+    private static final String TASK_RESPONSE_TITLE = "Tarefa 1";
+    private static final String TASK_DESCRIPTION = "Descricao da tarefa 1";
+    private static final String TASK_RESPONSE_DESCRIPTION = "Descrição da tarefa";
+    private static final Status TASK_STATUS = TO_DO;
+    private static final Integer ACCOUNT_ID = 1;
 
-        account.setId(1);
-        account.setName("João Silva");
-        account.setEmail("joao.silva@example.com");
-        account.setPassword("senha@123");
-        account.setProfilePhotoUrl("thispersondoesnotexist.com");
-        account.setActive(true);
+    public static Task taskFactory(){
+        Account account = AccountFactory.accountFactory();
 
         Task task = new Task();
-
-        task.setId(1);
-        task.setTitle("Titulo da tarefa 1");
-        task.setStatus(Status.valueOf(String.valueOf(TO_DO)));
-        task.setDescription("Descricao da tarefa 1");
+        task.setId(ID);
+        task.setTitle(TASK_TITLE);
+        task.setStatus(TASK_STATUS);
+        task.setDescription(TASK_DESCRIPTION);
         task.setAccount(account);
 
         return task;
     }
 
     public static JpaTaskEntity jpaTaskEntityFactory(){
-        JpaAccountEntity account = new JpaAccountEntity();
-        account.setId(1);
-        account.setName("joao.silva@example.com");
-        account.setPassword("senha@123");
-        account.setProfilePhotoUrl("thispersondoesnotexist.com");
-        account.setActive(true);
+        JpaAccountEntity account = AccountFactory.jpaAccountEntityFactory();
 
         JpaTaskEntity entity = new JpaTaskEntity();
-        entity.setId(1);
-        entity.setTitle("Titulo da tarefa 1");
-        entity.setStatus(Status.TO_DO);
-        entity.setDescription("Descricao da tarefa 1");
+        entity.setId(ID);
+        entity.setTitle(TASK_TITLE);
+        entity.setStatus(TASK_STATUS);
+        entity.setDescription(TASK_DESCRIPTION);
         entity.setAccount(account);
         return entity;
     }
 
     public static TaskResponse taskResponseFactory(){
         TaskResponse entity = new TaskResponse();
-        entity.setId(1);
-        entity.setTitle("Tarefa 1");
-        entity.setDescription("Descrição da tarefa");
-        entity.setStatus(TaskResponse.StatusEnum.valueOf("TO_DO"));
-        entity.setAccountId(1);
-        return entity;
-    }
-    public static TaskRequest taskRequestFactory(){
-        TaskRequest entity = new TaskRequest();
-        entity.setTitle("Tarefa 1");
-        entity.setDescription("Descrição da tarefa");
-        entity.setStatus(TaskRequest.StatusEnum.valueOf("TO_DO"));
-        entity.setAccountId(1);
+        entity.setId(ID);
+        entity.setTitle(TASK_RESPONSE_TITLE);
+        entity.setDescription(TASK_RESPONSE_DESCRIPTION);
+        entity.setStatus(TaskResponse.StatusEnum.valueOf(TASK_STATUS.name()));
+        entity.setAccountId(ACCOUNT_ID);
         return entity;
     }
 
+    public static TaskRequest taskRequestFactory(){
+        TaskRequest entity = new TaskRequest();
+        entity.setTitle(TASK_RESPONSE_TITLE);
+        entity.setDescription(TASK_RESPONSE_DESCRIPTION);
+        entity.setStatus(TaskRequest.StatusEnum.valueOf(TASK_STATUS.name()));
+        entity.setAccountId(ACCOUNT_ID);
+        return entity;
+    }
 }
+

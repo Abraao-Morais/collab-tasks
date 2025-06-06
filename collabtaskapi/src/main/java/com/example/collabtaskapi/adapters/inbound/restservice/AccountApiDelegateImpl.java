@@ -13,6 +13,10 @@ import java.util.List;
 
 @Component
 public class AccountApiDelegateImpl implements AccountApiDelegate {
+    public void setAccountServiceImpl(AccountServiceImpl accountServiceImpl) {
+        this.accountServiceImpl = accountServiceImpl;
+    }
+
     @Autowired
     private AccountServiceImpl accountServiceImpl;
 
