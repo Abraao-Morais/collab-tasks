@@ -5,6 +5,7 @@ import com.example.collabtaskapi.controller.TaskApiController;
 import com.example.collabtaskapi.controller.TaskApiDelegate;
 import com.example.collabtaskapi.dto.TaskRequest;
 import com.example.collabtaskapi.dto.TaskResponse;
+import com.example.collabtaskapi.factory.TaskFactory;
 import com.example.collabtaskapi.infrastructure.exceptions.EntityNotFoundException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -64,18 +65,8 @@ public class TaskApiDelegateImplTest {
 
     @BeforeEach
     void setup() {
-        taskRequest = new TaskRequest();
-        taskRequest.setTitle("Tarefa 1");
-        taskRequest.setDescription("Descrição da tarefa");
-        taskRequest.setStatus(TaskRequest.StatusEnum.valueOf("TO_DO"));
-        taskRequest.setAccountId(1);
-
-        taskResponse = new TaskResponse();
-        taskResponse.setId(VALID_ID);
-        taskResponse.setTitle("Tarefa 1");
-        taskResponse.setDescription("Descrição da tarefa");
-        taskResponse.setStatus(TaskResponse.StatusEnum.valueOf("TO_DO"));
-        taskResponse.setAccountId(1);
+        taskRequest = TaskFactory.taskRequestFactory();
+        taskResponse = TaskFactory.taskResponseFactory();
     }
 
     @Test
