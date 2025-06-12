@@ -5,6 +5,7 @@ import {
 } from "react-router-dom";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
+import Home from "../pages/Home";
 
 export default function Root() {
   const router = createBrowserRouter([
@@ -19,6 +20,10 @@ export default function Root() {
     {
       path: "/register",
       element: <Register />,
+    },
+    {
+      path: "/home",
+      element: <Home />,
     },
   ]);
 

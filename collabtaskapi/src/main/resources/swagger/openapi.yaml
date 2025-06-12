@@ -11,7 +11,6 @@ servers:
 paths:
   /auth/login:
     $ref: './paths/auth-login.yaml'
-
   /account:
     $ref: './paths/account.yaml'
   /account/{id}:

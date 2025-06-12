@@ -7,7 +7,10 @@ import com.example.collabtaskapi.dtos.AuthenticateUserRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Component;
 
+@Component
 public class AuthApiDelegateImpl implements AuthApiDelegate {
 
     private final AuthServiceImpl authService;

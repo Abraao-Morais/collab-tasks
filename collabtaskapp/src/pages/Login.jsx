@@ -21,8 +21,11 @@ export default function Login() {
     event.preventDefault();
 
     try {
-      await login(input);
-      navigate("/main/feed");
+      console.log(input)
+      const token = await login(input);
+      console.log(token)
+      localStorage.setItem('token', token);
+      navigate("/home");
     } catch (error) {
       console.log(error.message);
       if (error.response && error.response.status === 401) {
