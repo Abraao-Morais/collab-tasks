@@ -1,14 +1,11 @@
 import { PATH, post } from "./ApiService";
 
 export async function login(credentials) {
-  const response = await post(
-    PATH.LOGIN,
-    {},
-    {
-      auth: { username: credentials.username, password: credentials.password },
-    }
-  );
-  return response;
+  const response = await post("http://localhost:8080/auth/login", {
+    username: credentials.username,
+    password: credentials.password,
+  });
+  return response.data;
 }
 
 export async function register(body) {

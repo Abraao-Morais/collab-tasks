@@ -5,10 +5,11 @@ import com.example.collabtaskapi.adapters.outbound.entities.JpaTaskEntity;
 import com.example.collabtaskapi.domain.Account;
 import com.example.collabtaskapi.domain.Task;
 import com.example.collabtaskapi.domain.enums.Status;
-import com.example.collabtaskapi.dto.TaskRequest;
-import com.example.collabtaskapi.dto.TaskResponse;
+import com.example.collabtaskapi.dtos.TaskRequest;
+import com.example.collabtaskapi.dtos.TaskResponse;
 
 import static com.example.collabtaskapi.domain.enums.Status.TO_DO;
+
 public class TaskFactory {
 
     private static final Integer ID = 1;

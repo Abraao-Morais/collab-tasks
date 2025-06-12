@@ -14,5 +14,11 @@ spring:
   sql:
     init:
       mode: always
-      schema-locations: classpath:/data/schema.sql
+      schema-locations: classpath:data/schema.sql
       data-locations: classpath:data/data.sql
+
+jwt:
+  private:
+    key: classpath:app.key
+  public:
+    key: classpath:app.pub

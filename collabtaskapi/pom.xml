@@ -59,7 +59,7 @@
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-			<version>2.3.0</version>
+			<version>2.7.0</version>
 		</dependency>
 
 		<dependency>
@@ -110,6 +110,23 @@
 			<artifactId>lombok-mapstruct-binding</artifactId>
 			<version>${version.mapstruct-lombok}</version>
 		</dependency>
+
+		<!-- Security-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -135,8 +152,8 @@
 								<useSpringBoot3>true</useSpringBoot3>
 								<openApiNullable>false</openApiNullable>
 								<delegatePattern>true</delegatePattern>
-								<apiPackage>com.example.collabtaskapi.controller</apiPackage>
-								<modelPackage>com.example.collabtaskapi.dto</modelPackage>
+								<apiPackage>com.example.collabtaskapi.controllers</apiPackage>
+								<modelPackage>com.example.collabtaskapi.dtos</modelPackage>
 								<documentationProvider>springdoc</documentationProvider>
 								<reactive>false</reactive>
 							</configOptions>

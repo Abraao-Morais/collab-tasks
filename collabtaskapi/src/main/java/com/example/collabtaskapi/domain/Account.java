@@ -17,8 +17,7 @@ public class Account {
     public Account() {
     }
 
-    public Account(Integer id, String name, String email, String password,
-                   String profilePhotoUrl, boolean isActive) {
+    public Account(Integer id, String name, String email, String password, String profilePhotoUrl, boolean isActive) {
         this.id = id;
         this.name = name;
         this.email = email;

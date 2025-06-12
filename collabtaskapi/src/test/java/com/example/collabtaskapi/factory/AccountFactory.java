@@ -2,13 +2,12 @@ package com.example.collabtaskapi.factory;
 
 import com.example.collabtaskapi.adapters.outbound.entities.JpaAccountEntity;
 import com.example.collabtaskapi.domain.Account;
-import com.example.collabtaskapi.dto.AccountRequest;
-import com.example.collabtaskapi.dto.AccountResponse;
+import com.example.collabtaskapi.dtos.AccountRequest;
+import com.example.collabtaskapi.dtos.AccountResponse;
 
 import java.net.URI;
 
 public class AccountFactory {
-
 
     private static final Integer ID = 1;
     private static final String NAME = "João Silva";
