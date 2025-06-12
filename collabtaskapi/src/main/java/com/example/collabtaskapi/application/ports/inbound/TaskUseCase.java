@@ -7,9 +7,10 @@ import java.util.List;
 
 public interface TaskUseCase {
 
-    public List<TaskResponse> findAllByAccountId(Integer accountId);
-    public TaskResponse createNewTask(TaskRequest taskRequest);
-    public TaskResponse getTaskById(Integer id);
-    public void deleteTaskByID(Integer id);
-    public TaskResponse updateTaskById(Integer id, TaskRequest taskRequest);
+    List<TaskResponse> findAllByAccountId(Integer accountId);
+    TaskResponse createNewTask(TaskRequest taskRequest);
+    TaskResponse getTaskById(Integer id);
+    void deleteTaskByID(Integer id);
+    TaskResponse updateTaskById(Integer id, TaskRequest taskRequest);
+
 }

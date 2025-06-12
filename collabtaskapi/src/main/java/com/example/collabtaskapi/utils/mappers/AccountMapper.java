@@ -1,6 +1,6 @@
 package com.example.collabtaskapi.utils.mappers;
 
-import com.example.collabtaskapi.adapters.outbound.entities.JpaAccountEntity;
+import com.example.collabtaskapi.adapters.outbound.persistence.entities.JpaAccountEntity;
 import com.example.collabtaskapi.domain.Account;
 import com.example.collabtaskapi.dtos.AccountRequest;
 import com.example.collabtaskapi.dtos.AccountResponse;
@@ -15,6 +15,7 @@ public interface AccountMapper {
     Account accountRequestToAccount(AccountRequest accountRequest);
     AccountResponse accountToAccountResponse(Account account);
     JpaAccountEntity accountToJpaAccountEntity(Account account);
+
     default String map(URI uri) {
         return uri != null ? uri.toString() : null;
     }
