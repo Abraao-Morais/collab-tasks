@@ -38,7 +38,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
 @WebMvcTest(TaskApiController.class)
 @Import(TaskApiDelegateImplTest.TestConfig.class)
 public class TaskApiDelegateImplTest {
@@ -46,13 +45,13 @@ public class TaskApiDelegateImplTest {
     @TestConfiguration
     static class TestConfig {
         @Bean
-        public RestTaskUseCase taskUseCase() {
+        public RestTaskUseCase restTaskUseCase() {
             return Mockito.mock(RestTaskUseCaseImpl.class);
         }
 
         @Bean
-        public TaskApiDelegate taskApiDelegate(RestTaskUseCase taskUseCase) {
-            return new TaskApiDelegateImpl(taskUseCase);
+        public TaskApiDelegate taskApiDelegate(RestTaskUseCase restTaskUseCase) {
+            return new TaskApiDelegateImpl(restTaskUseCase);
         }
 
         @Bean
@@ -67,7 +66,7 @@ public class TaskApiDelegateImplTest {
     private MockMvc mockMvc;
 
     @Autowired
-    private RestTaskUseCase taskUseCase;
+    private RestTaskUseCase restTaskUseCase;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -86,7 +85,7 @@ public class TaskApiDelegateImplTest {
 
     @Test
     void shouldCreateNewTask() throws Exception {
-        when(taskUseCase.createNewTask(any(TaskRequest.class))).thenReturn(taskResponse);
+        when(restTaskUseCase.createNewTask(any(TaskRequest.class))).thenReturn(taskResponse);
 
         mockMvc.perform(post(BASE_PATH)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -98,7 +97,7 @@ public class TaskApiDelegateImplTest {
 
     @Test
     void shouldReturnTaskById() throws Exception {
-        when(taskUseCase.getTaskById(VALID_ID)).thenReturn(taskResponse);
+        when(restTaskUseCase.getTaskById(VALID_ID)).thenReturn(taskResponse);
 
         mockMvc.perform(get(BASE_PATH + "/" + VALID_ID))
                 .andExpect(status().isOk())
@@ -107,7 +106,7 @@ public class TaskApiDelegateImplTest {
 
     @Test
     void shouldReturn404WithMessageWhenTaskNotFound() throws Exception {
-        when(taskUseCase.getTaskById(INVALID_ID))
+        when(restTaskUseCase.getTaskById(INVALID_ID))
                 .thenThrow(new EntityNotFoundException("Task not found with id " + INVALID_ID));
 
         mockMvc.perform(get(BASE_PATH + "/" + INVALID_ID))
@@ -117,7 +116,7 @@ public class TaskApiDelegateImplTest {
 
     @Test
     void shouldReturnTasksByAssignedUser() throws Exception {
-        when(taskUseCase.findAllByAccountId(1)).thenReturn(List.of(taskResponse));
+        when(restTaskUseCase.findAllByAccountId(1)).thenReturn(List.of(taskResponse));
 
         mockMvc.perform(get(BASE_PATH).param("assignedTo", "1"))
                 .andExpect(status().isOk())
@@ -126,7 +125,7 @@ public class TaskApiDelegateImplTest {
 
     @Test
     void shouldReturnEmptyListWhenNoTasksForUser() throws Exception {
-        when(taskUseCase.findAllByAccountId(2)).thenReturn(List.of());
+        when(restTaskUseCase.findAllByAccountId(2)).thenReturn(List.of());
 
         mockMvc.perform(get(BASE_PATH).param("assignedTo", "2"))
                 .andExpect(status().isNoContent());
@@ -140,7 +139,7 @@ public class TaskApiDelegateImplTest {
 
     @Test
     void shouldUpdateTask() throws Exception {
-        when(taskUseCase.updateTaskById(Mockito.eq(VALID_ID), any(TaskRequest.class))).thenReturn(taskResponse);
+        when(restTaskUseCase.updateTaskById(Mockito.eq(VALID_ID), any(TaskRequest.class))).thenReturn(taskResponse);
 
         mockMvc.perform(put(BASE_PATH + "/" + VALID_ID)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -151,7 +150,7 @@ public class TaskApiDelegateImplTest {
 
     @Test
     void shouldReturn404WhenUpdateNonExistingTask() throws Exception {
-        when(taskUseCase.updateTaskById(Mockito.eq(INVALID_ID), any(TaskRequest.class)))
+        when(restTaskUseCase.updateTaskById(Mockito.eq(INVALID_ID), any(TaskRequest.class)))
                 .thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         mockMvc.perform(put(BASE_PATH + "/" + INVALID_ID)
@@ -168,7 +167,7 @@ public class TaskApiDelegateImplTest {
 
     @Test
     void shouldReturn404WhenDeleteNonExistingTask() throws Exception {
-        Mockito.doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND)).when(taskUseCase).deleteTaskByID(INVALID_ID);
+        Mockito.doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND)).when(restTaskUseCase).deleteTaskByID(INVALID_ID);
 
         mockMvc.perform(delete(BASE_PATH + "/" + INVALID_ID))
                 .andExpect(status().isNotFound());

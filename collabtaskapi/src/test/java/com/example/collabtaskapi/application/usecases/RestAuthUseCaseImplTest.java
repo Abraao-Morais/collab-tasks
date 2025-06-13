@@ -15,16 +15,16 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class AuthUseCaseImplTest {
+public class RestAuthUseCaseImplTest {
 
     @Mock
     private AuthenticationManager authenticationManager;
 
     @Mock
-    private SecurityTokenPort tokenService;
+    private SecurityTokenPort securityTokenPort;
 
     @InjectMocks
-    private RestAuthUseCaseImpl authUseCaseImpl;
+    private RestAuthUseCaseImpl restAuthUseCase;
 
     @Test
     void shouldAuthenticateAndReturnToken() {
@@ -33,12 +33,12 @@ public class AuthUseCaseImplTest {
         String expectedToken = "mocked.jwt.token";
 
         when(authenticationManager.authenticate(inputAuthentication)).thenReturn(authenticated);
-        when(tokenService.generateToken(authenticated)).thenReturn(expectedToken);
+        when(securityTokenPort.generateToken(authenticated)).thenReturn(expectedToken);
 
-        String actualToken = authUseCaseImpl.authenticate(inputAuthentication);
+        String actualToken = restAuthUseCase.login(inputAuthentication);
 
         assertEquals(expectedToken, actualToken);
         verify(authenticationManager).authenticate(inputAuthentication);
-        verify(tokenService).generateToken(authenticated);
+        verify(securityTokenPort).generateToken(authenticated);
     }
 }

@@ -24,16 +24,16 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class TaskServiceImplTest {
+public class RestTaskUseCaseImplTest {
 
     @Mock
-    private RepositoryTaskPort taskRepository;
+    private RepositoryTaskPort repositoryTaskPort;
 
     @Mock
     private TaskMapper taskMapper;
 
     @InjectMocks
-    private RestTaskUseCaseImpl taskService;
+    private RestTaskUseCaseImpl restTaskUseCase;
 
     @Test
     void shouldReturnListOfTaskResponsesByAccountId() {
@@ -42,14 +42,14 @@ public class TaskServiceImplTest {
         TaskResponse response1 = TaskFactory.taskResponseFactory();
         TaskResponse response2 = TaskFactory.taskResponseFactory();
 
-        when(taskRepository.findAllByAccountId(1)).thenReturn(Arrays.asList(task1, task2));
+        when(repositoryTaskPort.findAllByAccountId(1)).thenReturn(Arrays.asList(task1, task2));
         when(taskMapper.taskToTaskResponse(task1)).thenReturn(response1);
         when(taskMapper.taskToTaskResponse(task2)).thenReturn(response2);
 
-        List<TaskResponse> result = taskService.findAllByAccountId(1);
+        List<TaskResponse> result = restTaskUseCase.findAllByAccountId(1);
 
         assertEquals(2, result.size());
-        verify(taskRepository).findAllByAccountId(1);
+        verify(repositoryTaskPort).findAllByAccountId(1);
     }
 
     @Test
@@ -59,14 +59,14 @@ public class TaskServiceImplTest {
         TaskResponse response = TaskFactory.taskResponseFactory();
 
         when(taskMapper.taskRequestToTask(request)).thenReturn(task);
-        when(taskRepository.save(task)).thenReturn(task);
+        when(repositoryTaskPort.save(task)).thenReturn(task);
         when(taskMapper.taskToTaskResponse(task)).thenReturn(response);
 
-        TaskResponse result = taskService.createNewTask(request);
+        TaskResponse result = restTaskUseCase.createNewTask(request);
 
         assertNotNull(result);
         assertEquals(response, result);
-        verify(taskRepository).save(task);
+        verify(repositoryTaskPort).save(task);
     }
 
     @Test
@@ -74,20 +74,20 @@ public class TaskServiceImplTest {
         Task task = TaskFactory.taskFactory();
         TaskResponse response = TaskFactory.taskResponseFactory();
 
-        when(taskRepository.findById(1)).thenReturn(Optional.of(task));
+        when(repositoryTaskPort.findById(1)).thenReturn(Optional.of(task));
         when(taskMapper.taskToTaskResponse(task)).thenReturn(response);
 
-        TaskResponse result = taskService.getTaskById(1);
+        TaskResponse result = restTaskUseCase.getTaskById(1);
 
         assertEquals(response, result);
     }
 
     @Test
     void shouldThrowExceptionWhenTaskNotFoundById() {
-        when(taskRepository.findById(99)).thenReturn(Optional.empty());
+        when(repositoryTaskPort.findById(99)).thenReturn(Optional.empty());
 
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class,
-                () -> taskService.getTaskById(99));
+                () -> restTaskUseCase.getTaskById(99));
 
         assertEquals("Task not found with id 99", exception.getMessage());
     }
@@ -96,19 +96,19 @@ public class TaskServiceImplTest {
     void shouldDeleteTaskByIdWhenExists() {
         Task task = TaskFactory.taskFactory();
 
-        when(taskRepository.findById(1)).thenReturn(Optional.of(task));
+        when(repositoryTaskPort.findById(1)).thenReturn(Optional.of(task));
 
-        taskService.deleteTaskByID(1);
+        restTaskUseCase.deleteTaskByID(1);
 
-        verify(taskRepository).delete(1);
+        verify(repositoryTaskPort).delete(1);
     }
 
     @Test
     void shouldThrowExceptionWhenDeleteTaskNotFound() {
-        when(taskRepository.findById(99)).thenReturn(Optional.empty());
+        when(repositoryTaskPort.findById(99)).thenReturn(Optional.empty());
 
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class,
-                () -> taskService.deleteTaskByID(99));
+                () -> restTaskUseCase.deleteTaskByID(99));
 
         assertEquals("Task not found with id 99", exception.getMessage());
     }
@@ -119,11 +119,11 @@ public class TaskServiceImplTest {
         Task task = TaskFactory.taskFactory();
         TaskResponse response = TaskFactory.taskResponseFactory();
 
-        when(taskRepository.findById(1)).thenReturn(Optional.of(task));
-        when(taskRepository.save(task)).thenReturn(task);
+        when(repositoryTaskPort.findById(1)).thenReturn(Optional.of(task));
+        when(repositoryTaskPort.save(task)).thenReturn(task);
         when(taskMapper.taskToTaskResponse(task)).thenReturn(response);
 
-        TaskResponse result = taskService.updateTaskById(1, request);
+        TaskResponse result = restTaskUseCase.updateTaskById(1, request);
 
         assertNotNull(result);
         assertEquals(response, result);
@@ -132,10 +132,10 @@ public class TaskServiceImplTest {
     @Test
     void shouldThrowExceptionWhenUpdateTaskNotFound() {
         TaskRequest request = TaskFactory.taskRequestFactory();
-        when(taskRepository.findById(99)).thenReturn(Optional.empty());
+        when(repositoryTaskPort.findById(99)).thenReturn(Optional.empty());
 
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class,
-                () -> taskService.updateTaskById(99, request));
+                () -> restTaskUseCase.updateTaskById(99, request));
 
         assertEquals("Task not found with id 99", exception.getMessage());
     }
