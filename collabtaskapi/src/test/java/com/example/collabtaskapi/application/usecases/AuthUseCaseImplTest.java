@@ -24,7 +24,7 @@ public class AuthUseCaseImplTest {
     private TokenService tokenService;
 
     @InjectMocks
-    private AuthUseCaseImpl authUseCaseImpl;
+    private RestAuthUseCaseImpl authUseCaseImpl;
 
     @Test
     void shouldAuthenticateAndReturnToken() {

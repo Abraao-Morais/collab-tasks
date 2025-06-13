@@ -7,12 +7,10 @@ import com.example.collabtaskapi.dtos.TaskResponse;
 import com.example.collabtaskapi.factory.TaskFactory;
 import com.example.collabtaskapi.infrastructure.exceptions.EntityNotFoundException;
 import com.example.collabtaskapi.utils.mappers.TaskMapper;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
@@ -35,7 +33,7 @@ public class TaskServiceImplTest {
     private TaskMapper taskMapper;
 
     @InjectMocks
-    private TaskUseCaseImpl taskService;
+    private RestTaskUseCaseImpl taskService;
 
     @Test
     void shouldReturnListOfTaskResponsesByAccountId() {

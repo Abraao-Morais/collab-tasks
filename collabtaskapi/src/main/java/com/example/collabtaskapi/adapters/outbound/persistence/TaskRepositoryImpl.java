@@ -8,11 +8,13 @@ import com.example.collabtaskapi.application.ports.outbound.TaskRepository;
 import com.example.collabtaskapi.infrastructure.exceptions.EntityNotFoundException;
 import com.example.collabtaskapi.utils.mappers.AccountMapper;
 import com.example.collabtaskapi.utils.mappers.TaskMapper;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Repository
 public class TaskRepositoryImpl implements TaskRepository {
 
     private final JpaTaskRepository jpaTaskRepository;

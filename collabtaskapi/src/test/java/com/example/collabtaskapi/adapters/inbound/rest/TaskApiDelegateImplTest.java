@@ -1,7 +1,7 @@
 package com.example.collabtaskapi.adapters.inbound.rest;
 
-import com.example.collabtaskapi.application.ports.inbound.TaskUseCase;
-import com.example.collabtaskapi.application.usecases.TaskUseCaseImpl;
+import com.example.collabtaskapi.application.ports.inbound.RestTaskUseCase;
+import com.example.collabtaskapi.application.usecases.RestTaskUseCaseImpl;
 import com.example.collabtaskapi.controllers.TaskApiController;
 import com.example.collabtaskapi.controllers.TaskApiDelegate;
 import com.example.collabtaskapi.dtos.TaskRequest;
@@ -46,12 +46,12 @@ public class TaskApiDelegateImplTest {
     @TestConfiguration
     static class TestConfig {
         @Bean
-        public TaskUseCase taskUseCase() {
-            return Mockito.mock(TaskUseCaseImpl.class);
+        public RestTaskUseCase taskUseCase() {
+            return Mockito.mock(RestTaskUseCaseImpl.class);
         }
 
         @Bean
-        public TaskApiDelegate taskApiDelegate(TaskUseCase taskUseCase) {
+        public TaskApiDelegate taskApiDelegate(RestTaskUseCase taskUseCase) {
             return new TaskApiDelegateImpl(taskUseCase);
         }
 
@@ -67,7 +67,7 @@ public class TaskApiDelegateImplTest {
     private MockMvc mockMvc;
 
     @Autowired
-    private TaskUseCase taskUseCase;
+    private RestTaskUseCase taskUseCase;
 
     @Autowired
     private ObjectMapper objectMapper;

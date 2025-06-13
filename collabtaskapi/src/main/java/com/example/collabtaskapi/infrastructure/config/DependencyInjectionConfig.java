@@ -1,18 +1,16 @@
 package com.example.collabtaskapi.infrastructure.config;
 
-import com.example.collabtaskapi.adapters.outbound.persistence.AccountRepositoryImpl;
-import com.example.collabtaskapi.adapters.outbound.persistence.TaskRepositoryImpl;
-import com.example.collabtaskapi.adapters.outbound.persistence.repositories.JpaAccountRepository;
-import com.example.collabtaskapi.adapters.outbound.persistence.repositories.JpaTaskRepository;
-import com.example.collabtaskapi.application.ports.inbound.AccountUseCase;
-import com.example.collabtaskapi.application.ports.inbound.AuthUseCase;
-import com.example.collabtaskapi.application.ports.inbound.TaskUseCase;
+import com.example.collabtaskapi.application.ports.inbound.RestAccountUseCase;
+import com.example.collabtaskapi.application.ports.inbound.RestAuthUseCase;
+import com.example.collabtaskapi.application.ports.inbound.RestTaskUseCase;
+import com.example.collabtaskapi.application.ports.inbound.SecurityAccountUseCase;
 import com.example.collabtaskapi.application.ports.outbound.AccountRepository;
 import com.example.collabtaskapi.application.ports.outbound.TaskRepository;
 import com.example.collabtaskapi.application.ports.outbound.TokenService;
-import com.example.collabtaskapi.application.usecases.AccountUseCaseImpl;
-import com.example.collabtaskapi.application.usecases.AuthUseCaseImpl;
-import com.example.collabtaskapi.application.usecases.TaskUseCaseImpl;
+import com.example.collabtaskapi.application.usecases.RestAccountUseCaseImpl;
+import com.example.collabtaskapi.application.usecases.RestAuthUseCaseImpl;
+import com.example.collabtaskapi.application.usecases.RestTaskUseCaseImpl;
+import com.example.collabtaskapi.application.usecases.SecurityAccountUseCaseImpl;
 import com.example.collabtaskapi.utils.mappers.AccountMapper;
 import com.example.collabtaskapi.utils.mappers.TaskMapper;
 import org.springframework.context.annotation.Bean;
@@ -23,27 +21,22 @@ import org.springframework.security.authentication.AuthenticationManager;
 public class DependencyInjectionConfig {
 
     @Bean
-    public AccountUseCase accountUseCase(AccountRepository accountRepository, AccountMapper accountMapper) {
-        return new AccountUseCaseImpl(accountRepository, accountMapper);
+    public RestAccountUseCase restAccountUseCase(AccountRepository accountRepository, AccountMapper accountMapper) {
+        return new RestAccountUseCaseImpl(accountRepository, accountMapper);
     }
 
     @Bean
-    public AuthUseCase authUseCase(AuthenticationManager authenticationManager, TokenService tokenService) {
-        return new AuthUseCaseImpl(authenticationManager, tokenService);
+    public RestAuthUseCase restAuthUseCase(AuthenticationManager authenticationManager, TokenService tokenService) {
+        return new RestAuthUseCaseImpl(authenticationManager, tokenService);
     }
 
     @Bean
-    public TaskUseCase taskUseCase(TaskRepository taskRepository, TaskMapper taskMapper) {
-        return new TaskUseCaseImpl(taskRepository, taskMapper);
+    public RestTaskUseCase restTaskUseCase(TaskRepository taskRepository, TaskMapper taskMapper) {
+        return new RestTaskUseCaseImpl(taskRepository, taskMapper);
     }
 
     @Bean
-    public AccountRepository accountRepository(JpaAccountRepository jpaAccountRepository, AccountMapper accountMapper) {
-        return new AccountRepositoryImpl(jpaAccountRepository, accountMapper);
-    }
-
-    @Bean
-    public TaskRepository taskRepository(JpaTaskRepository jpaTaskRepository, TaskMapper taskMapper, AccountMapper accountMapper) {
-        return new TaskRepositoryImpl(jpaTaskRepository, taskMapper, accountMapper);
+    public SecurityAccountUseCase securityAccountUseCase(AccountRepository accountRepository) {
+        return new SecurityAccountUseCaseImpl(accountRepository);
     }
 }

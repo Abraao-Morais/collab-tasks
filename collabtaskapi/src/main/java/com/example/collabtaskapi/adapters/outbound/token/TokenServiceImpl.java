@@ -1,4 +1,4 @@
-package com.example.collabtaskapi.adapters.outbound.security;
+package com.example.collabtaskapi.adapters.outbound.token;
 
 import com.example.collabtaskapi.application.ports.outbound.TokenService;
 import org.springframework.security.core.Authentication;

@@ -5,7 +5,7 @@ import com.example.collabtaskapi.dtos.TaskResponse;
 
 import java.util.List;
 
-public interface TaskUseCase {
+public interface RestTaskUseCase {
 
     List<TaskResponse> findAllByAccountId(Integer accountId);
     TaskResponse createNewTask(TaskRequest taskRequest);

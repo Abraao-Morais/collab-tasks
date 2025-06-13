@@ -2,23 +2,22 @@ package com.example.collabtaskapi.application.usecases;
 
 import com.example.collabtaskapi.domain.Account;
 import com.example.collabtaskapi.domain.enums.Status;
-import com.example.collabtaskapi.application.ports.inbound.TaskUseCase;
+import com.example.collabtaskapi.application.ports.inbound.RestTaskUseCase;
 import com.example.collabtaskapi.domain.Task;
 import com.example.collabtaskapi.application.ports.outbound.TaskRepository;
 import com.example.collabtaskapi.dtos.TaskRequest;
 import com.example.collabtaskapi.dtos.TaskResponse;
 import com.example.collabtaskapi.infrastructure.exceptions.EntityNotFoundException;
-import com.example.collabtaskapi.utils.mappers.AccountMapper;
 import com.example.collabtaskapi.utils.mappers.TaskMapper;
 
 import java.util.List;
 
-public class TaskUseCaseImpl implements TaskUseCase {
+public class RestTaskUseCaseImpl implements RestTaskUseCase {
 
     private final TaskRepository taskRepository;
     private final TaskMapper taskMapper;
 
-    public TaskUseCaseImpl(TaskRepository taskRepository, TaskMapper taskMapper) {
+    public RestTaskUseCaseImpl(TaskRepository taskRepository, TaskMapper taskMapper) {
         this.taskRepository = taskRepository;
         this.taskMapper = taskMapper;
     }

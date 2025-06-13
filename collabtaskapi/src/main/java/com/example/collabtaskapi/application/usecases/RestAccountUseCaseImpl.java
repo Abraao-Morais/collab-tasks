@@ -1,7 +1,7 @@
 package com.example.collabtaskapi.application.usecases;
 
 import com.example.collabtaskapi.domain.Account;
-import com.example.collabtaskapi.application.ports.inbound.AccountUseCase;
+import com.example.collabtaskapi.application.ports.inbound.RestAccountUseCase;
 import com.example.collabtaskapi.application.ports.outbound.AccountRepository;
 import com.example.collabtaskapi.dtos.AccountRequest;
 import com.example.collabtaskapi.dtos.AccountResponse;
@@ -10,12 +10,12 @@ import com.example.collabtaskapi.utils.mappers.AccountMapper;
 
 import java.util.List;
 
-public class AccountUseCaseImpl implements AccountUseCase {
+public class RestAccountUseCaseImpl implements RestAccountUseCase {
 
     private final AccountRepository accountRepository;
     private final AccountMapper accountMapper;
 
-    public AccountUseCaseImpl(AccountRepository accountRepository, AccountMapper accountMapper) {
+    public RestAccountUseCaseImpl(AccountRepository accountRepository, AccountMapper accountMapper) {
         this.accountRepository = accountRepository;
         this.accountMapper = accountMapper;
     }
