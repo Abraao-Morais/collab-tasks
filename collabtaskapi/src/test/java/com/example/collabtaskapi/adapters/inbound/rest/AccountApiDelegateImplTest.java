@@ -1,7 +1,7 @@
 package com.example.collabtaskapi.adapters.inbound.rest;
 
-import com.example.collabtaskapi.application.ports.inbound.AccountUseCase;
-import com.example.collabtaskapi.application.usecases.AccountUseCaseImpl;
+import com.example.collabtaskapi.application.ports.inbound.RestAccountUseCase;
+import com.example.collabtaskapi.application.usecases.RestAccountUseCaseImpl;
 import com.example.collabtaskapi.controllers.AccountApiController;
 import com.example.collabtaskapi.controllers.AccountApiDelegate;
 import com.example.collabtaskapi.dtos.AccountRequest;
@@ -45,13 +45,13 @@ public class AccountApiDelegateImplTest {
     @TestConfiguration
     static class TestConfig {
         @Bean
-        public AccountUseCase accountUseCase() {
-            return Mockito.mock(AccountUseCaseImpl.class);
+        public RestAccountUseCaseImpl restAccountUseCase() {
+            return Mockito.mock(RestAccountUseCaseImpl.class);
         }
 
         @Bean
-        public AccountApiDelegate accountApiDelegate(AccountUseCase accountUseCase) {
-            return new AccountApiDelegateImpl(accountUseCase);
+        public AccountApiDelegate accountApiDelegate(RestAccountUseCase restAccountUseCase) {
+            return new AccountApiDelegateImpl(restAccountUseCase);
         }
 
         @Bean
@@ -66,7 +66,7 @@ public class AccountApiDelegateImplTest {
     private MockMvc mockMvc;
 
     @Autowired
-    private AccountUseCase accountUseCase;
+    private RestAccountUseCase restAccountUseCase;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -85,7 +85,7 @@ public class AccountApiDelegateImplTest {
 
     @Test
     void shouldCreateNewAccount() throws Exception {
-        when(accountUseCase.createNewAccount(any(AccountRequest.class))).thenReturn(accountResponse);
+        when(restAccountUseCase.createNewAccount(any(AccountRequest.class))).thenReturn(accountResponse);
 
         mockMvc.perform(post(BASE_PATH)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -97,7 +97,7 @@ public class AccountApiDelegateImplTest {
 
     @Test
     void shouldReturnAccountById() throws Exception {
-        when(accountUseCase.getAccountById(VALID_ID)).thenReturn(accountResponse);
+        when(restAccountUseCase.getAccountById(VALID_ID)).thenReturn(accountResponse);
 
         mockMvc.perform(get(BASE_PATH + "/" + VALID_ID))
                 .andExpect(status().isOk())
@@ -106,7 +106,7 @@ public class AccountApiDelegateImplTest {
 
     @Test
     void shouldReturn404WhenAccountNotFound() throws Exception {
-        when(accountUseCase.getAccountById(INVALID_ID))
+        when(restAccountUseCase.getAccountById(INVALID_ID))
                 .thenThrow(new EntityNotFoundException("Account not found with id " + INVALID_ID));
 
         mockMvc.perform(get(BASE_PATH + "/" + INVALID_ID))
@@ -116,7 +116,7 @@ public class AccountApiDelegateImplTest {
 
     @Test
     void shouldReturnAllAccounts() throws Exception {
-        when(accountUseCase.listAllAccounts()).thenReturn(List.of(accountResponse));
+        when(restAccountUseCase.listAllAccounts()).thenReturn(List.of(accountResponse));
 
         mockMvc.perform(get(BASE_PATH))
                 .andExpect(status().isOk())
@@ -125,7 +125,7 @@ public class AccountApiDelegateImplTest {
 
     @Test
     void shouldReturnNoContentWhenNoAccounts() throws Exception {
-        when(accountUseCase.listAllAccounts()).thenReturn(List.of());
+        when(restAccountUseCase.listAllAccounts()).thenReturn(List.of());
 
         mockMvc.perform(get(BASE_PATH))
                 .andExpect(status().isNoContent());
@@ -133,7 +133,7 @@ public class AccountApiDelegateImplTest {
 
     @Test
     void shouldUpdateAccount() throws Exception {
-        when(accountUseCase.updateAccountByID(Mockito.eq(VALID_ID), any(AccountRequest.class)))
+        when(restAccountUseCase.updateAccountByID(Mockito.eq(VALID_ID), any(AccountRequest.class)))
                 .thenReturn(accountResponse);
 
         mockMvc.perform(put(BASE_PATH + "/" + VALID_ID)
@@ -145,7 +145,7 @@ public class AccountApiDelegateImplTest {
 
     @Test
     void shouldReturn404WhenUpdatingNonExistentAccount() throws Exception {
-        when(accountUseCase.updateAccountByID(Mockito.eq(INVALID_ID), any(AccountRequest.class)))
+        when(restAccountUseCase.updateAccountByID(Mockito.eq(INVALID_ID), any(AccountRequest.class)))
                 .thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         mockMvc.perform(put(BASE_PATH + "/" + INVALID_ID)
@@ -162,7 +162,7 @@ public class AccountApiDelegateImplTest {
 
     @Test
     void shouldReturn404WhenDeletingNonExistentAccount() throws Exception {
-        Mockito.doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND)).when(accountUseCase).deleteAccountByID(INVALID_ID);
+        Mockito.doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND)).when(restAccountUseCase).deleteAccountByID(INVALID_ID);
 
         mockMvc.perform(delete(BASE_PATH + "/" + INVALID_ID))
                 .andExpect(status().isNotFound());

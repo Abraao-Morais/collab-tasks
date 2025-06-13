@@ -26,7 +26,7 @@ import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-public class AccountRepositoryImplTest {
+public class RepositoryAccountPortImplTest {
 
     @Mock
     private JpaAccountRepository jpaAccountRepository;
@@ -35,7 +35,7 @@ public class AccountRepositoryImplTest {
     private AccountMapper accountMapper;
 
     @InjectMocks
-    private AccountRepositoryImpl accountRepositoryImpl;
+    private RepositoryAccountPortImpl repositoryAccountPort;
 
     @Test
     void shouldReturnAccountWhenIdExists() {
@@ -45,7 +45,7 @@ public class AccountRepositoryImplTest {
         when(jpaAccountRepository.findById(account.getId())).thenReturn(Optional.of(entity));
         when(accountMapper.jpaAccountEntityToAccount(entity)).thenReturn(account);
 
-        Optional<Account> result = accountRepositoryImpl.findById(account.getId());
+        Optional<Account> result = repositoryAccountPort.findById(account.getId());
 
         assertTrue(result.isPresent());
         assertEquals(account, result.get());
@@ -59,7 +59,7 @@ public class AccountRepositoryImplTest {
         when(jpaAccountRepository.findByName(account.getName())).thenReturn(Optional.of(entity));
         when(accountMapper.jpaAccountEntityToAccount(entity)).thenReturn(account);
 
-        Optional<Account> result = accountRepositoryImpl.findByName(account.getName());
+        Optional<Account> result = repositoryAccountPort.findByName(account.getName());
 
         assertTrue(result.isPresent());
         assertEquals(account, result.get());
@@ -77,7 +77,7 @@ public class AccountRepositoryImplTest {
         when(accountMapper.jpaAccountEntityToAccount(entity1)).thenReturn(account1);
         when(accountMapper.jpaAccountEntityToAccount(entity2)).thenReturn(account2);
 
-        List<Account> result = accountRepositoryImpl.findAll();
+        List<Account> result = repositoryAccountPort.findAll();
 
         assertEquals(2, result.size());
         assertEquals(account1, result.get(0));
@@ -92,7 +92,7 @@ public class AccountRepositoryImplTest {
         when(jpaAccountRepository.save(any(JpaAccountEntity.class))).thenReturn(entity);
         when(accountMapper.jpaAccountEntityToAccount(entity)).thenReturn(account);
 
-        Account result = accountRepositoryImpl.save(account);
+        Account result = repositoryAccountPort.save(account);
 
         assertNotNull(result);
         assertEquals(account.getName(), result.getName());
@@ -104,7 +104,7 @@ public class AccountRepositoryImplTest {
 
         when(jpaAccountRepository.findById(entity.getId())).thenReturn(Optional.of(entity));
 
-        accountRepositoryImpl.delete(entity.getId());
+        repositoryAccountPort.delete(entity.getId());
 
         verify(jpaAccountRepository, times(1)).delete(entity);
     }
@@ -116,7 +116,7 @@ public class AccountRepositoryImplTest {
         when(jpaAccountRepository.findById(id)).thenReturn(Optional.empty());
 
         EntityNotFoundException thrown = assertThrows(EntityNotFoundException.class, () -> {
-            accountRepositoryImpl.delete(id);
+            repositoryAccountPort.delete(id);
         });
 
         assertEquals("Account not found with id " + id, thrown.getMessage());

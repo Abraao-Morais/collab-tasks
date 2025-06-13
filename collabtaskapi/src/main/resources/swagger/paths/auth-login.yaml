@@ -3,7 +3,7 @@ post:
       - auth
     summary: Authenticate user and generate a JWT token
     description: Endpoint público para autenticação do usuário. Retorna token JWT.
-    operationId: authenticateUser
+    operationId: login
     security: []   # Torna esse endpoint público, sem autenticação requerida
     requestBody:
       required: true

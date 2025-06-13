@@ -7,11 +7,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
-public class SecurityAccountEntity implements UserDetails {
+public class UserDetailsImpl implements UserDetails {
 
     private final Account account;
 
-    public SecurityAccountEntity(Account account) {
+    public UserDetailsImpl(Account account) {
         this.account = account;
     }
 
