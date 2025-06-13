@@ -1,7 +1,7 @@
 package com.example.collabtaskapi.application.usecases;
 
 import com.example.collabtaskapi.domain.Account;
-import com.example.collabtaskapi.application.ports.outbound.AccountRepository;
+import com.example.collabtaskapi.application.ports.outbound.RepositoryAccountPort;
 import com.example.collabtaskapi.dtos.AccountRequest;
 import com.example.collabtaskapi.dtos.AccountResponse;
 import com.example.collabtaskapi.factory.AccountFactory;
@@ -29,7 +29,7 @@ import static org.mockito.Mockito.verify;
 public class AccountServiceImplTest {
 
     @Mock
-    private AccountRepository accountRepository;
+    private RepositoryAccountPort accountRepository;
 
     @Mock
     private AccountMapper accountMapper;

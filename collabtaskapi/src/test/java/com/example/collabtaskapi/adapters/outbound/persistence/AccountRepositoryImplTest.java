@@ -35,7 +35,7 @@ public class AccountRepositoryImplTest {
     private AccountMapper accountMapper;
 
     @InjectMocks
-    private AccountRepositoryImpl accountRepositoryImpl;
+    private RepositoryAccountPortImpl accountRepositoryImpl;
 
     @Test
     void shouldReturnAccountWhenIdExists() {

@@ -1,6 +1,6 @@
 package com.example.collabtaskapi.application.usecases;
 
-import com.example.collabtaskapi.application.ports.outbound.TokenService;
+import com.example.collabtaskapi.application.ports.outbound.SecurityTokenPort;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -21,7 +21,7 @@ public class AuthUseCaseImplTest {
     private AuthenticationManager authenticationManager;
 
     @Mock
-    private TokenService tokenService;
+    private SecurityTokenPort tokenService;
 
     @InjectMocks
     private RestAuthUseCaseImpl authUseCaseImpl;

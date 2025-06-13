@@ -1,15 +1,14 @@
 package com.example.collabtaskapi.adapters.outbound.persistence;
 
 import com.example.collabtaskapi.adapters.outbound.persistence.entities.JpaTokenEntity;
-import com.example.collabtaskapi.application.ports.outbound.TokenRepository;
-import org.springframework.stereotype.Repository;
+import com.example.collabtaskapi.application.ports.outbound.RepositoryTokenPort;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
 
-@Repository
-public class TokenRepositoryImpl implements TokenRepository {
-
+@Component
+public class RepositoryTokenPortImpl implements RepositoryTokenPort {
 
     @Override
     public List<JpaTokenEntity> findAllValidTokenByAccountId(Integer accountId) {

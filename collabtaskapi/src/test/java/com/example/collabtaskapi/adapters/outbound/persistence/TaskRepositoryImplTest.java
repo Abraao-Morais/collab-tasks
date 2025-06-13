@@ -33,7 +33,7 @@ public class TaskRepositoryImplTest {
     private AccountMapper accountMapper;
 
     @InjectMocks
-    private TaskRepositoryImpl taskRepositoryImpl;
+    private RepositoryTaskPortImpl taskRepositoryImpl;
 
 
     @Test

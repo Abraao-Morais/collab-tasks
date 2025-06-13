@@ -1,22 +1,22 @@
-package com.example.collabtaskapi.adapters.outbound.token;
+package com.example.collabtaskapi.adapters.outbound.security;
 
-import com.example.collabtaskapi.application.ports.outbound.TokenService;
+import com.example.collabtaskapi.application.ports.outbound.SecurityTokenPort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.time.Instant;
 import java.util.stream.Collectors;
 
-@Service
-public class TokenServiceImpl implements TokenService {
+@Component
+public class SecurityTokenPortImpl implements SecurityTokenPort {
 
     private final JwtEncoder jwtEncoder;
 
-    public TokenServiceImpl(JwtEncoder jwtEncoder) {
+    public SecurityTokenPortImpl(JwtEncoder jwtEncoder) {
         this.jwtEncoder = jwtEncoder;
     }
 

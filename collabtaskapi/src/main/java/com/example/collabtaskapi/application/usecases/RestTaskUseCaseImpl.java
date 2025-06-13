@@ -4,7 +4,7 @@ import com.example.collabtaskapi.domain.Account;
 import com.example.collabtaskapi.domain.enums.Status;
 import com.example.collabtaskapi.application.ports.inbound.RestTaskUseCase;
 import com.example.collabtaskapi.domain.Task;
-import com.example.collabtaskapi.application.ports.outbound.TaskRepository;
+import com.example.collabtaskapi.application.ports.outbound.RepositoryTaskPort;
 import com.example.collabtaskapi.dtos.TaskRequest;
 import com.example.collabtaskapi.dtos.TaskResponse;
 import com.example.collabtaskapi.infrastructure.exceptions.EntityNotFoundException;
@@ -14,17 +14,18 @@ import java.util.List;
 
 public class RestTaskUseCaseImpl implements RestTaskUseCase {
 
-    private final TaskRepository taskRepository;
+    private final RepositoryTaskPort repositoryTaskPort;
     private final TaskMapper taskMapper;
 
-    public RestTaskUseCaseImpl(TaskRepository taskRepository, TaskMapper taskMapper) {
-        this.taskRepository = taskRepository;
+    public RestTaskUseCaseImpl(RepositoryTaskPort repositoryTaskPort, TaskMapper taskMapper) {
+        this.repositoryTaskPort = repositoryTaskPort;
         this.taskMapper = taskMapper;
     }
 
+
     @Override
     public List<TaskResponse> findAllByAccountId(Integer accountId) {
-        return taskRepository.findAllByAccountId(accountId).stream().
+        return repositoryTaskPort.findAllByAccountId(accountId).stream().
                 map(taskMapper::taskToTaskResponse).toList();
     }
 
@@ -36,33 +37,33 @@ public class RestTaskUseCaseImpl implements RestTaskUseCase {
         account.setId(taskRequest.getAccountId());
         task.setAccount(account);
 
-        task = taskRepository.save(task);
+        task = repositoryTaskPort.save(task);
         return taskMapper.taskToTaskResponse(task);
     }
     @Override
     public TaskResponse getTaskById(Integer id) {
-        Task task = taskRepository.findById(id).
+        Task task = repositoryTaskPort.findById(id).
                 orElseThrow(() -> new EntityNotFoundException("Task not found with id " + id ));
         return taskMapper.taskToTaskResponse(task);
     }
 
     @Override
     public void deleteTaskByID(Integer id) {
-        Task task = taskRepository.findById(id).
+        Task task = repositoryTaskPort.findById(id).
                 orElseThrow(()-> new EntityNotFoundException("Task not found with id " + id ));
-        taskRepository.delete(id);
+        repositoryTaskPort.delete(id);
     }
 
     @Override
     public TaskResponse updateTaskById(Integer id, TaskRequest taskRequest) {
-        Task task = taskRepository.findById(id).
+        Task task = repositoryTaskPort.findById(id).
                 orElseThrow(() -> new EntityNotFoundException("Task not found with id " + id ));
 
         task.setTitle(taskRequest.getTitle());
         task.setDescription(taskRequest.getDescription());
         task.setStatus(Status.valueOf(taskRequest.getStatus().name()));
 
-        Task savedTask = taskRepository.save(task);
+        Task savedTask = repositoryTaskPort.save(task);
         return taskMapper.taskToTaskResponse(savedTask);
     }
 }

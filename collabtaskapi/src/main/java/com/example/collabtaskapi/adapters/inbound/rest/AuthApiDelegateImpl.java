@@ -19,10 +19,10 @@ public class AuthApiDelegateImpl implements AuthApiDelegate {
     }
 
     @Override
-    public ResponseEntity<AuthResponse> authenticateUser(AuthRequest authRequest) {
+    public ResponseEntity<AuthResponse> login(AuthRequest authRequest) {
         Authentication authentication = new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword());
         AuthResponse authResponse = new AuthResponse();
-        authResponse.setToken(restAuthUseCase.authenticate(authentication));
+        authResponse.setToken(restAuthUseCase.login(authentication));
         return ResponseEntity.ok(authResponse);
     }
 }

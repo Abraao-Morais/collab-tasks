@@ -4,6 +4,6 @@ import org.springframework.security.core.Authentication;
 
 public interface RestAuthUseCase {
 
-    String authenticate(Authentication authentication);
+    String login(Authentication authentication);
 
 }

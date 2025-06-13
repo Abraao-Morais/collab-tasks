@@ -5,7 +5,7 @@ import com.example.collabtaskapi.domain.Task;
 import java.util.List;
 import java.util.Optional;
 
-public interface TaskRepository {
+public interface RepositoryTaskPort {
 
     Optional<Task> findById(Integer id);
     List<Task> findAllByAccountId(Integer accountId);

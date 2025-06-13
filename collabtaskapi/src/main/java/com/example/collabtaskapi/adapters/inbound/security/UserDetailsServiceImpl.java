@@ -21,6 +21,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Account account = securityAccountUseCase.getAccountByName(username);
         return new UserDetailsImpl(account);
-
     }
+
 }

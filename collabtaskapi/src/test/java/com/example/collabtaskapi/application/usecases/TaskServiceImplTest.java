@@ -1,7 +1,7 @@
 package com.example.collabtaskapi.application.usecases;
 
 import com.example.collabtaskapi.domain.Task;
-import com.example.collabtaskapi.application.ports.outbound.TaskRepository;
+import com.example.collabtaskapi.application.ports.outbound.RepositoryTaskPort;
 import com.example.collabtaskapi.dtos.TaskRequest;
 import com.example.collabtaskapi.dtos.TaskResponse;
 import com.example.collabtaskapi.factory.TaskFactory;
@@ -27,7 +27,7 @@ import static org.mockito.Mockito.when;
 public class TaskServiceImplTest {
 
     @Mock
-    private TaskRepository taskRepository;
+    private RepositoryTaskPort taskRepository;
 
     @Mock
     private TaskMapper taskMapper;
