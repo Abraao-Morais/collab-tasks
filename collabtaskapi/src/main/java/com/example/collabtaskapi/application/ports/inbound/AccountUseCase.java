@@ -7,9 +7,10 @@ import java.util.List;
 
 public interface AccountUseCase {
 
-    public List<AccountResponse> listAllAccounts();
-    public AccountResponse createNewAccount(AccountRequest accountRequest);
-    public AccountResponse getAccountById(Integer id);
-    public void deleteAccountByID(Integer id);
-    public AccountResponse updateAccountByID(Integer id, AccountRequest accountRequest);
+    List<AccountResponse> listAllAccounts();
+    AccountResponse createNewAccount(AccountRequest accountRequest);
+    AccountResponse getAccountById(Integer id);
+    void deleteAccountByID(Integer id);
+    AccountResponse updateAccountByID(Integer id, AccountRequest accountRequest);
+
 }

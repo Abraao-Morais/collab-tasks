@@ -1,6 +1,6 @@
 package com.example.collabtaskapi.adapters.inbound.security;
 
-import com.example.collabtaskapi.adapters.inbound.entities.SecurityAccountEntity;
+import com.example.collabtaskapi.adapters.inbound.security.entities.SecurityAccountEntity;
 import com.example.collabtaskapi.application.ports.outbound.AccountRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

@@ -10,27 +10,13 @@ post:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              username:
-                type: string
-                example: user@example.com
-              password:
-                type: string
-                example: password123
-            required:
-              - username
-              - password
+            $ref: '../schemas/auth.yaml#/AuthRequest'
     responses:
       '200':
         description: Token JWT gerado com sucesso
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                token:
-                  type: string
-                  example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+              $ref: '../schemas/auth.yaml#/AuthResponse'
       '401':
         description: Credenciais inválidas

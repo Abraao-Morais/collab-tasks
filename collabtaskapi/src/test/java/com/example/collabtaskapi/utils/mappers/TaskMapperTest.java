@@ -1,6 +1,6 @@
 package com.example.collabtaskapi.utils.mappers;
 
-import com.example.collabtaskapi.adapters.outbound.entities.JpaTaskEntity;
+import com.example.collabtaskapi.adapters.outbound.persistence.entities.JpaTaskEntity;
 import com.example.collabtaskapi.domain.Task;
 import com.example.collabtaskapi.dtos.TaskRequest;
 import com.example.collabtaskapi.dtos.TaskResponse;
