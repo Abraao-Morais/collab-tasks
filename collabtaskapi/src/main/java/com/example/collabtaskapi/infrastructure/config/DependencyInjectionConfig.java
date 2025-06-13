@@ -6,6 +6,8 @@ import com.example.collabtaskapi.application.ports.inbound.RestTaskUseCase;
 import com.example.collabtaskapi.application.ports.inbound.SecurityAccountUseCase;
 import com.example.collabtaskapi.application.ports.outbound.RepositoryAccountPort;
 import com.example.collabtaskapi.application.ports.outbound.RepositoryTaskPort;
+import com.example.collabtaskapi.application.ports.outbound.RepositoryTokenPort;
+import com.example.collabtaskapi.application.ports.outbound.SecurityAuthenticationPort;
 import com.example.collabtaskapi.application.ports.outbound.SecurityEncoderPort;
 import com.example.collabtaskapi.application.ports.outbound.SecurityTokenPort;
 import com.example.collabtaskapi.application.usecases.RestAccountUseCaseImpl;
@@ -16,7 +18,6 @@ import com.example.collabtaskapi.utils.mappers.AccountMapper;
 import com.example.collabtaskapi.utils.mappers.TaskMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
 
 @Configuration
 public class DependencyInjectionConfig {
@@ -27,17 +28,17 @@ public class DependencyInjectionConfig {
     }
 
     @Bean
-    public RestAuthUseCase restAuthUseCase(AuthenticationManager authenticationManager, SecurityTokenPort tokenService) {
-        return new RestAuthUseCaseImpl(authenticationManager, tokenService);
+    public RestAuthUseCase restAuthUseCase(RepositoryAccountPort accountRepository, RepositoryTokenPort repositoryTokenPort, SecurityAuthenticationPort securityAuthenticationPort, SecurityTokenPort securityTokenPort) {
+        return new RestAuthUseCaseImpl(accountRepository, repositoryTokenPort, securityAuthenticationPort, securityTokenPort);
     }
 
     @Bean
-    public RestTaskUseCase restTaskUseCase(RepositoryTaskPort taskRepository, TaskMapper taskMapper) {
-        return new RestTaskUseCaseImpl(taskRepository, taskMapper);
+    public RestTaskUseCase restTaskUseCase(RepositoryTaskPort repositoryTaskPort, TaskMapper taskMapper) {
+        return new RestTaskUseCaseImpl(repositoryTaskPort, taskMapper);
     }
 
     @Bean
-    public SecurityAccountUseCase securityAccountUseCase(RepositoryAccountPort accountRepository) {
-        return new SecurityAccountUseCaseImpl(accountRepository);
+    public SecurityAccountUseCase securityAccountUseCase(RepositoryAccountPort repositoryAccountPort) {
+        return new SecurityAccountUseCaseImpl(repositoryAccountPort);
     }
 }
