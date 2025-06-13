@@ -4,7 +4,6 @@ import com.example.collabtaskapi.adapters.outbound.persistence.AccountRepository
 import com.example.collabtaskapi.adapters.outbound.persistence.TaskRepositoryImpl;
 import com.example.collabtaskapi.adapters.outbound.persistence.repositories.JpaAccountRepository;
 import com.example.collabtaskapi.adapters.outbound.persistence.repositories.JpaTaskRepository;
-import com.example.collabtaskapi.adapters.outbound.security.TokenServiceImpl;
 import com.example.collabtaskapi.application.ports.inbound.AccountUseCase;
 import com.example.collabtaskapi.application.ports.inbound.AuthUseCase;
 import com.example.collabtaskapi.application.ports.inbound.TaskUseCase;
@@ -19,7 +18,6 @@ import com.example.collabtaskapi.utils.mappers.TaskMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.oauth2.jwt.JwtEncoder;
 
 @Configuration
 public class DependencyInjectionConfig {
