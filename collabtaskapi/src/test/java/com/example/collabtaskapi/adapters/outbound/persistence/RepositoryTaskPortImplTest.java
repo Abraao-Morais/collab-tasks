@@ -18,12 +18,17 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class TaskRepositoryImplTest {
+public class RepositoryTaskPortImplTest {
 
     @Mock
     private JpaTaskRepository jpaTaskRepository;
@@ -33,8 +38,7 @@ public class TaskRepositoryImplTest {
     private AccountMapper accountMapper;
 
     @InjectMocks
-    private TaskRepositoryImpl taskRepositoryImpl;
-
+    private RepositoryTaskPortImpl repositoryTaskPort;
 
     @Test
     public void shouldReturnTaskWhenIdExists() {
@@ -44,7 +48,7 @@ public class TaskRepositoryImplTest {
         when(jpaTaskRepository.findById(entity.getId())).thenReturn(Optional.of(entity));
         when(taskMapper.jpaTaskEntityToTask(entity)).thenReturn(task);
 
-        Optional<Task> result = taskRepositoryImpl.findById(entity.getId());
+        Optional<Task> result = repositoryTaskPort.findById(entity.getId());
 
         assertTrue(result.isPresent());
         assertEquals(task, result.get());
@@ -62,7 +66,7 @@ public class TaskRepositoryImplTest {
         when(taskMapper.jpaTaskEntityToTask(entity1)).thenReturn(task1);
         when(taskMapper.jpaTaskEntityToTask(entity2)).thenReturn(task2);
 
-        List<Task> result = taskRepositoryImpl.findAllByAccountId(1);
+        List<Task> result = repositoryTaskPort.findAllByAccountId(1);
 
         assertEquals(2, result.size());
         assertEquals(task1, result.get(0));
@@ -79,7 +83,7 @@ public class TaskRepositoryImplTest {
         when(jpaTaskRepository.save(any(JpaTaskEntity.class))).thenReturn(entity);
         when(taskMapper.jpaTaskEntityToTask(entity)).thenReturn(task);
 
-        Task result = taskRepositoryImpl.save(task);
+        Task result = repositoryTaskPort.save(task);
 
         assertNotNull(result);
         assertEquals(task.getTitle(), result.getTitle());
@@ -91,7 +95,7 @@ public class TaskRepositoryImplTest {
 
         when(jpaTaskRepository.findById(entity.getId())).thenReturn(Optional.of(entity));
 
-        taskRepositoryImpl.delete(entity.getId());
+        repositoryTaskPort.delete(entity.getId());
 
         verify(jpaTaskRepository, times(1)).delete(entity);
     }
@@ -103,7 +107,7 @@ public class TaskRepositoryImplTest {
         when(jpaTaskRepository.findById(id)).thenReturn(Optional.empty());
 
         EntityNotFoundException thrown = assertThrows(EntityNotFoundException.class, () -> {
-            taskRepositoryImpl.delete(id);
+            repositoryTaskPort.delete(id);
         });
 
         assertEquals("Task not found with id " + id, thrown.getMessage());

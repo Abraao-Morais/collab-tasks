@@ -1,6 +1,6 @@
 package com.example.collabtaskapi.adapters.inbound.rest;
 
-import com.example.collabtaskapi.application.ports.inbound.TaskUseCase;
+import com.example.collabtaskapi.application.ports.inbound.RestTaskUseCase;
 import com.example.collabtaskapi.controllers.TaskApiDelegate;
 import com.example.collabtaskapi.dtos.TaskRequest;
 import com.example.collabtaskapi.dtos.TaskResponse;
@@ -13,15 +13,15 @@ import java.util.List;
 @Component
 public class TaskApiDelegateImpl implements TaskApiDelegate {
 
-    private final TaskUseCase taskUseCase;
+    private final RestTaskUseCase restTaskUseCase;
 
-    public TaskApiDelegateImpl(TaskUseCase taskUseCase) {
-        this.taskUseCase = taskUseCase;
+    public TaskApiDelegateImpl(RestTaskUseCase restTaskUseCase) {
+        this.restTaskUseCase = restTaskUseCase;
     }
 
     @Override
     public ResponseEntity<TaskResponse> createNewTask(TaskRequest taskRequest) {
-        TaskResponse createdTask = taskUseCase.createNewTask(taskRequest);
+        TaskResponse createdTask = restTaskUseCase.createNewTask(taskRequest);
 
         if (createdTask == null) {
             return ResponseEntity.badRequest().build();
@@ -34,19 +34,19 @@ public class TaskApiDelegateImpl implements TaskApiDelegate {
 
     @Override
     public ResponseEntity<Void> deleteTaskById(Integer id) {
-        taskUseCase.deleteTaskByID(id);
+        restTaskUseCase.deleteTaskByID(id);
         return ResponseEntity.noContent().build();
     }
 
     @Override
     public ResponseEntity<TaskResponse> getTaskById(Integer id) {
-        TaskResponse taskResponse = taskUseCase.getTaskById(id);
+        TaskResponse taskResponse = restTaskUseCase.getTaskById(id);
         return ResponseEntity.ok(taskResponse);
     }
 
     @Override
     public ResponseEntity<List<TaskResponse>> taskGet(Integer assignedTo) {
-        List<TaskResponse> responseList = taskUseCase.findAllByAccountId(assignedTo);
+        List<TaskResponse> responseList = restTaskUseCase.findAllByAccountId(assignedTo);
         if (responseList.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
@@ -55,7 +55,7 @@ public class TaskApiDelegateImpl implements TaskApiDelegate {
 
     @Override
     public ResponseEntity<TaskResponse> updateTaskById(Integer id, TaskRequest taskRequest) {
-        TaskResponse taskResponse = taskUseCase.updateTaskById(id, taskRequest);
+        TaskResponse taskResponse = restTaskUseCase.updateTaskById(id, taskRequest);
         return ResponseEntity.ok(taskResponse);
     }
 }

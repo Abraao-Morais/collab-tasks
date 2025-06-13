@@ -5,7 +5,7 @@ import com.example.collabtaskapi.dtos.AccountResponse;
 
 import java.util.List;
 
-public interface AccountUseCase {
+public interface RestAccountUseCase {
 
     List<AccountResponse> listAllAccounts();
     AccountResponse createNewAccount(AccountRequest accountRequest);

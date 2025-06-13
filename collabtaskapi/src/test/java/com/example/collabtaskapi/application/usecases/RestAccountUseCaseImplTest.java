@@ -1,7 +1,8 @@
 package com.example.collabtaskapi.application.usecases;
 
+import com.example.collabtaskapi.application.ports.outbound.SecurityEncoderPort;
 import com.example.collabtaskapi.domain.Account;
-import com.example.collabtaskapi.application.ports.outbound.AccountRepository;
+import com.example.collabtaskapi.application.ports.outbound.RepositoryAccountPort;
 import com.example.collabtaskapi.dtos.AccountRequest;
 import com.example.collabtaskapi.dtos.AccountResponse;
 import com.example.collabtaskapi.factory.AccountFactory;
@@ -22,20 +23,24 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-public class AccountServiceImplTest {
+public class RestAccountUseCaseImplTest {
 
     @Mock
-    private AccountRepository accountRepository;
+    private RepositoryAccountPort repositoryAccountPort;
+
+    @Mock
+    private SecurityEncoderPort securityEncoderPort;
 
     @Mock
     private AccountMapper accountMapper;
 
     @InjectMocks
-    private AccountUseCaseImpl accountService;
+    private RestAccountUseCaseImpl restAccountUseCase;
 
     private AccountRequest accountRequest;
     private Account account;
@@ -50,44 +55,45 @@ public class AccountServiceImplTest {
 
     @Test
     void shouldListAllAccounts() {
-        when(accountRepository.findAll()).thenReturn(Arrays.asList(account));
+        when(repositoryAccountPort.findAll()).thenReturn(Arrays.asList(account));
         when(accountMapper.accountToAccountResponse(account)).thenReturn(accountResponse);
 
-        List<AccountResponse> result = accountService.listAllAccounts();
+        List<AccountResponse> result = restAccountUseCase.listAllAccounts();
 
         assertEquals(1, result.size());
-        verify(accountRepository).findAll();
+        verify(repositoryAccountPort).findAll();
     }
 
     @Test
     void shouldCreateNewAccount() {
         when(accountMapper.accountRequestToAccount(accountRequest)).thenReturn(account);
-        when(accountRepository.save(account)).thenReturn(account);
+        when(securityEncoderPort.encode(any())).thenReturn(any());
+        when(repositoryAccountPort.save(account)).thenReturn(account);
         when(accountMapper.accountToAccountResponse(account)).thenReturn(accountResponse);
 
-        AccountResponse result = accountService.createNewAccount(accountRequest);
+        AccountResponse result = restAccountUseCase.createNewAccount(accountRequest);
 
         assertNotNull(result);
         assertEquals(accountResponse, result);
-        verify(accountRepository).save(account);
+        verify(repositoryAccountPort).save(account);
     }
 
     @Test
     void shouldReturnAccountById() {
-        when(accountRepository.findById(1)).thenReturn(Optional.of(account));
+        when(repositoryAccountPort.findById(1)).thenReturn(Optional.of(account));
         when(accountMapper.accountToAccountResponse(account)).thenReturn(accountResponse);
 
-        AccountResponse result = accountService.getAccountById(1);
+        AccountResponse result = restAccountUseCase.getAccountById(1);
 
         assertEquals(accountResponse, result);
     }
 
     @Test
     void shouldThrowExceptionWhenAccountNotFoundById() {
-        when(accountRepository.findById(999)).thenReturn(Optional.empty());
+        when(repositoryAccountPort.findById(999)).thenReturn(Optional.empty());
 
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class,
-                () -> accountService.getAccountById(999));
+                () -> restAccountUseCase.getAccountById(999));
 
         assertEquals("Account not found with id 999", exception.getMessage());
     }
@@ -96,32 +102,32 @@ public class AccountServiceImplTest {
     void shouldDeactivateAccountWhenDeleted() {
         account.setActive(true);
 
-        when(accountRepository.findById(1)).thenReturn(Optional.of(account));
-        when(accountRepository.save(account)).thenReturn(account);
+        when(repositoryAccountPort.findById(1)).thenReturn(Optional.of(account));
+        when(repositoryAccountPort.save(account)).thenReturn(account);
 
-        accountService.deleteAccountByID(1);
+        restAccountUseCase.deleteAccountByID(1);
 
         assertFalse(account.getIsActive());
-        verify(accountRepository).save(account);
+        verify(repositoryAccountPort).save(account);
     }
 
     @Test
     void shouldThrowExceptionWhenDeleteAccountNotFound() {
-        when(accountRepository.findById(999)).thenReturn(Optional.empty());
+        when(repositoryAccountPort.findById(999)).thenReturn(Optional.empty());
 
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class,
-                () -> accountService.deleteAccountByID(999));
+                () -> restAccountUseCase.deleteAccountByID(999));
 
         assertEquals("Account not found with id 999", exception.getMessage());
     }
 
     @Test
     void shouldUpdateAccountWhenExists() {
-        when(accountRepository.findById(1)).thenReturn(Optional.of(account));
-        when(accountRepository.save(account)).thenReturn(account);
+        when(repositoryAccountPort.findById(1)).thenReturn(Optional.of(account));
+        when(repositoryAccountPort.save(account)).thenReturn(account);
         when(accountMapper.accountToAccountResponse(account)).thenReturn(accountResponse);
 
-        AccountResponse result = accountService.updateAccountByID(1, accountRequest);
+        AccountResponse result = restAccountUseCase.updateAccountByID(1, accountRequest);
 
         assertNotNull(result);
         assertEquals(accountResponse, result);
@@ -129,10 +135,10 @@ public class AccountServiceImplTest {
 
     @Test
     void shouldThrowExceptionWhenUpdateAccountNotFound() {
-        when(accountRepository.findById(999)).thenReturn(Optional.empty());
+        when(repositoryAccountPort.findById(999)).thenReturn(Optional.empty());
 
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class,
-                () -> accountService.updateAccountByID(999, accountRequest));
+                () -> restAccountUseCase.updateAccountByID(999, accountRequest));
 
         assertEquals("Account not found with id 999", exception.getMessage());
     }

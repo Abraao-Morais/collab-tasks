@@ -4,26 +4,29 @@ import com.example.collabtaskapi.adapters.outbound.persistence.entities.JpaTaskE
 import com.example.collabtaskapi.adapters.outbound.persistence.repositories.JpaTaskRepository;
 import com.example.collabtaskapi.domain.Account;
 import com.example.collabtaskapi.domain.Task;
-import com.example.collabtaskapi.application.ports.outbound.TaskRepository;
+import com.example.collabtaskapi.application.ports.outbound.RepositoryTaskPort;
 import com.example.collabtaskapi.infrastructure.exceptions.EntityNotFoundException;
 import com.example.collabtaskapi.utils.mappers.AccountMapper;
 import com.example.collabtaskapi.utils.mappers.TaskMapper;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class TaskRepositoryImpl implements TaskRepository {
+@Component
+public class RepositoryTaskPortImpl implements RepositoryTaskPort {
 
     private final JpaTaskRepository jpaTaskRepository;
     private final TaskMapper taskMapper;
     private final AccountMapper accountMapper;
 
-    public TaskRepositoryImpl(JpaTaskRepository jpaTaskRepository, TaskMapper taskMapper, AccountMapper accountMapper) {
+    public RepositoryTaskPortImpl(JpaTaskRepository jpaTaskRepository, TaskMapper taskMapper, AccountMapper accountMapper) {
         this.jpaTaskRepository = jpaTaskRepository;
         this.taskMapper = taskMapper;
         this.accountMapper = accountMapper;
     }
+
     @Override
     public Optional<Task> findById(Integer id) {
         Optional<JpaTaskEntity> taskEntity = this.jpaTaskRepository.findById(id);

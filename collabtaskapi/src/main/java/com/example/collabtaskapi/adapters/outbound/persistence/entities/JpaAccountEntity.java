@@ -2,6 +2,7 @@ package com.example.collabtaskapi.adapters.outbound.persistence.entities;
 
 import com.example.collabtaskapi.domain.Account;
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
@@ -10,6 +11,8 @@ import lombok.Builder;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.EqualsAndHashCode;
+
+import java.util.List;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
@@ -30,6 +33,9 @@ public class JpaAccountEntity {
     private String password;
     private String profilePhotoUrl;
     private boolean isActive;
+
+    @OneToMany(mappedBy = "account")
+    private List<JpaTokenEntity> tokens;
 
     public JpaAccountEntity(Account account) {
         this.id = account.getId();
