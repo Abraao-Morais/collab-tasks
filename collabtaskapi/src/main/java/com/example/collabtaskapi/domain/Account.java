@@ -3,19 +3,15 @@ package com.example.collabtaskapi.domain;
 import java.util.Objects;
 
 public class Account {
+
     private Integer id;
-
     private String name;
-
     private String email;
-
     private String password;
-
     private String profilePhotoUrl;
     private boolean isActive;
 
-    public Account() {
-    }
+    public Account() {}
 
     public Account(Integer id, String name, String email, String password, String profilePhotoUrl, boolean isActive) {
         this.id = id;

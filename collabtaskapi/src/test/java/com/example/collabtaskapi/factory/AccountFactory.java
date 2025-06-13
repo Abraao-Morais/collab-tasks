@@ -1,6 +1,6 @@
 package com.example.collabtaskapi.factory;
 
-import com.example.collabtaskapi.adapters.outbound.entities.JpaAccountEntity;
+import com.example.collabtaskapi.adapters.outbound.persistence.entities.JpaAccountEntity;
 import com.example.collabtaskapi.domain.Account;
 import com.example.collabtaskapi.dtos.AccountRequest;
 import com.example.collabtaskapi.dtos.AccountResponse;

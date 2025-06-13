@@ -15,7 +15,6 @@ paths:
     $ref: './paths/account.yaml'
   /account/{id}:
     $ref: './paths/account-id.yaml'
-
   /task:
     $ref: './paths/task.yaml'
   /task/{id}:
@@ -29,4 +28,4 @@ components:
       bearerFormat: JWT
 
 security:
-  - bearerAuth: []
+  - bearerAuth: [ ]
