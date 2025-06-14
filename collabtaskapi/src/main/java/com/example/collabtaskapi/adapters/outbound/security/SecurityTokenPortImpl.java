@@ -1,6 +1,7 @@
 package com.example.collabtaskapi.adapters.outbound.security;
 
 import com.example.collabtaskapi.application.ports.outbound.SecurityTokenPort;
+import com.example.collabtaskapi.domain.enums.RoleType;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
@@ -17,7 +18,7 @@ public class SecurityTokenPortImpl implements SecurityTokenPort {
         this.jwtEncoder = jwtEncoder;
     }
 
-    public String generateToken(String userName) {
+    public String generateToken(String userName, RoleType role) {
         Instant now = Instant.now();
         long expiry = 3600L;
 
@@ -26,6 +27,7 @@ public class SecurityTokenPortImpl implements SecurityTokenPort {
                 .issuedAt(now)
                 .expiresAt(now.plusSeconds(expiry))
                 .subject(userName)
+                .claim("role", role.name())
                 .build();
 
         return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();

@@ -35,6 +35,38 @@ delete:
   responses:
     '204':
       description: Account successfully deleted
+    '403':
+      description: You are not allowed to delete this account.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                example: error
+              type:
+                type: string
+                example: Forbidden
+              description:
+                type: string
+                example: You do not have permission to delete this account.
+    '404':
+      description: Account not found.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                example: error
+              type:
+                type: string
+                example: NotFound
+              description:
+                type: string
+                example: Account with the specified ID does not exist.
 
 put:
   tags:

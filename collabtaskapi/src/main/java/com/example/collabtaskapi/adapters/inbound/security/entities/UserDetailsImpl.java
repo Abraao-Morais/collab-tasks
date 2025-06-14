@@ -2,6 +2,7 @@ package com.example.collabtaskapi.adapters.inbound.security.entities;
 
 import com.example.collabtaskapi.domain.Account;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
@@ -15,9 +16,15 @@ public class UserDetailsImpl implements UserDetails {
         this.account = account;
     }
 
+    /*
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(() -> "read");
+    }*/
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority("ROLE_" + account.getRole().name()));
     }
 
     @Override

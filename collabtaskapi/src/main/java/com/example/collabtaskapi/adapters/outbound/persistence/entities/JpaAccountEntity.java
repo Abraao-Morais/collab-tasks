@@ -1,11 +1,8 @@
 package com.example.collabtaskapi.adapters.outbound.persistence.entities;
 
 import com.example.collabtaskapi.domain.Account;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
+import com.example.collabtaskapi.domain.enums.RoleType;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Builder;
 import lombok.AllArgsConstructor;
@@ -23,6 +20,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @NoArgsConstructor
 @Table(name = "account")
 @EqualsAndHashCode(of = "id")
+
 public class JpaAccountEntity {
 
     @Id
@@ -32,6 +30,11 @@ public class JpaAccountEntity {
     private String email;
     private String password;
     private String profilePhotoUrl;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role")
+    private RoleType role;
+
     private boolean isActive;
 
     @OneToMany(mappedBy = "account")
@@ -43,6 +46,7 @@ public class JpaAccountEntity {
         this.email = account.getEmail();
         this.password = account.getPassword();
         this.profilePhotoUrl = account.getProfilePhotoUrl();
+        this.role = account.getRole();
         this.isActive = account.getIsActive();
     }
 }

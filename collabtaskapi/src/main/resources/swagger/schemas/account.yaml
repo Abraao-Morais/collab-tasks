@@ -21,6 +21,10 @@ AccountResponse:
     is_active:
       type: boolean
       example: true
+    role:
+      type: string
+      enum: [ USER, ADMIN, VIEW ]    # <- atualizado aqui
+      example: "ADMIN"
 
 AccountRequest:
   type: object
@@ -28,6 +32,7 @@ AccountRequest:
     - name
     - email
     - password
+    - role
   properties:
     name:
       type: string
@@ -48,3 +53,7 @@ AccountRequest:
       format: uri
       nullable: true
       example: "https://www.thispersondoesnotexist.com"
+    role:
+      type: string
+      enum: [ USER, ADMIN, VIEW ]    # <- atualizado aqui
+      example: "VIEW"
