@@ -32,7 +32,7 @@ public class RestAuthUseCaseImpl implements RestAuthUseCase {
                 .orElseThrow(() -> new EntityNotFoundException("Account not found with name " + authRequest.getUsername()));
 
         Token token = new Token();
-        token.setToken(securityTokenPort.generateToken(account.getName()));
+        token.setToken(securityTokenPort.generateToken(account.getName(),account.getRole()));
         token.setTokenType(TokenType.BEARER);
         token.setAccount(account);
         token.setExpired(false);

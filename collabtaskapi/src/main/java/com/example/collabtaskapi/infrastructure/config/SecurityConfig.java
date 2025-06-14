@@ -22,9 +22,13 @@ import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
 
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -60,9 +64,19 @@ public class SecurityConfig {
                                 "/v3/api-docs/**",
                                 "/swagger-resources/**",
                                 "/webjars/**").permitAll()
+                        // Permissões por role
+                        .requestMatchers(HttpMethod.GET, "/task/**").hasAnyRole("ADMIN", "USER", "VIEW")
+                        .requestMatchers(HttpMethod.GET, "/account/**").hasAnyRole("ADMIN", "USER")
+                        .requestMatchers(HttpMethod.POST, "/task").hasAnyRole("ADMIN", "USER")
+                        .requestMatchers(HttpMethod.POST, "/account").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/**").hasAnyRole("ADMIN", "USER")
+                        .requestMatchers(HttpMethod.DELETE, "/task/**").hasAnyRole("ADMIN", "USER")
+                        .requestMatchers(HttpMethod.DELETE, "/account/**").hasRole("ADMIN")
+
+
                         .anyRequest().authenticated()
                 )
-                .oauth2ResourceServer(conf -> conf.jwt(Customizer.withDefaults()))
+                .oauth2ResourceServer(conf -> conf.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())))
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults());
 
@@ -84,5 +98,15 @@ public class SecurityConfig {
     @Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public JwtAuthenticationConverter jwtAuthenticationConverter() {
+        JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
+        converter.setJwtGrantedAuthoritiesConverter(jwt -> {
+            String role = jwt.getClaim("role");
+            return List.of(new SimpleGrantedAuthority("ROLE_" + role));
+        });
+        return converter;
     }
 }

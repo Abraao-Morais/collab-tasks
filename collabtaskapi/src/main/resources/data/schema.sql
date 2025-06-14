@@ -4,6 +4,7 @@ CREATE TABLE account (
     email VARCHAR(150) NOT NULL UNIQUE,
     password CHAR(60) NOT NULL,
     profile_photo_url VARCHAR(255),
+    role VARCHAR(20),
     is_active BOOLEAN DEFAULT TRUE
 );
 
