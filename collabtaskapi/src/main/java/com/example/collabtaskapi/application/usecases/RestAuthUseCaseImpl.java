@@ -9,7 +9,6 @@ import com.example.collabtaskapi.domain.Account;
 import com.example.collabtaskapi.domain.Token;
 import com.example.collabtaskapi.domain.enums.TokenType;
 import com.example.collabtaskapi.dtos.AuthRequest;
-import com.example.collabtaskapi.infrastructure.exceptions.EntityNotFoundException;
 
 public class RestAuthUseCaseImpl implements RestAuthUseCase {
 
@@ -25,25 +24,40 @@ public class RestAuthUseCaseImpl implements RestAuthUseCase {
         this.securityTokenPort = securityTokenPort;
     }
 
+    @Override
     public String login(AuthRequest authRequest){
         securityAuthenticationPort.authenticate(authRequest.getUsername(), authRequest.getPassword());
+        var account = repositoryAccountPort.findByName(authRequest.getUsername());
+        var jwtToken = securityTokenPort.generateToken(account.getName(),account.getRole());
 
-        Account account = repositoryAccountPort.findByName(authRequest.getUsername())
-                .orElseThrow(() -> new EntityNotFoundException("Account not found with name " + authRequest.getUsername()));
+        revokedAllTokensByUser(account);
+        saveToken(jwtToken, account);
+        return jwtToken;
+    }
 
+    public void logout(){
+
+    }
+
+    private void revokedAllTokensByUser(Account account){
+        var validTokens = repositoryTokenPort.findAllValidTokenByAccountId(account.getId());
+        if(validTokens.isEmpty())
+            return;
+        validTokens.forEach(token -> {
+            token.setExpired(true);
+            token.setRevoked(true);
+        });
+        repositoryTokenPort.saveAll(validTokens);
+    }
+
+    private void saveToken(String jwtToken, Account account) {
         Token token = new Token();
-        token.setToken(securityTokenPort.generateToken(account.getName(),account.getRole()));
+        token.setToken(jwtToken);
         token.setTokenType(TokenType.BEARER);
         token.setAccount(account);
         token.setExpired(false);
         token.setRevoked(false);
 
         repositoryTokenPort.save(token);
-
-        return token.getToken();
-    }
-
-    public void logout(){
-
     }
 }

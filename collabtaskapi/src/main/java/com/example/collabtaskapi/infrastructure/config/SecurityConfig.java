@@ -25,7 +25,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.util.List;
@@ -64,7 +63,6 @@ public class SecurityConfig {
                                 "/v3/api-docs/**",
                                 "/swagger-resources/**",
                                 "/webjars/**").permitAll()
-                        // Permissões por role
                         .requestMatchers(HttpMethod.GET, "/task/**").hasAnyRole("ADMIN", "USER", "VIEW")
                         .requestMatchers(HttpMethod.GET, "/account/**").hasAnyRole("ADMIN", "USER")
                         .requestMatchers(HttpMethod.POST, "/task").hasAnyRole("ADMIN", "USER")
@@ -72,8 +70,6 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PUT, "/**").hasAnyRole("ADMIN", "USER")
                         .requestMatchers(HttpMethod.DELETE, "/task/**").hasAnyRole("ADMIN", "USER")
                         .requestMatchers(HttpMethod.DELETE, "/account/**").hasRole("ADMIN")
-
-
                         .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(conf -> conf.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())))
@@ -89,7 +85,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    JwtEncoder jwtEnconder() {
+    JwtEncoder jwtEncoder() {
         var jwk = new RSAKey.Builder(key).privateKey(priv).build();
         var jwks = new ImmutableJWKSet<>(new JWKSet(jwk));
         return new NimbusJwtEncoder(jwks);

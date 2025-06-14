@@ -16,12 +16,6 @@ public class UserDetailsImpl implements UserDetails {
         this.account = account;
     }
 
-    /*
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(() -> "read");
-    }*/
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_" + account.getRole().name()));

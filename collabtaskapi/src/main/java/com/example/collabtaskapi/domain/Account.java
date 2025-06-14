@@ -66,11 +66,15 @@ public class Account {
         this.profilePhotoUrl = profilePhotoUrl;
     }
 
-    public RoleType getRole() { return role; }
+    public RoleType getRole() {
+        return role;
+    }
 
-    public void setRole(RoleType role) { this.role = role; }
+    public void setRole(RoleType role) {
+        this.role = role;
+    }
 
-    public boolean getIsActive() {
+    public boolean isActive() {
         return isActive;
     }
 

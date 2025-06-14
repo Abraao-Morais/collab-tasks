@@ -2,7 +2,13 @@ package com.example.collabtaskapi.adapters.outbound.persistence.entities;
 
 import com.example.collabtaskapi.domain.Account;
 import com.example.collabtaskapi.domain.enums.RoleType;
-import jakarta.persistence.*;
+import jakarta.persistence.Table;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.EnumType;
 import lombok.Data;
 import lombok.Builder;
 import lombok.AllArgsConstructor;
@@ -32,7 +38,6 @@ public class JpaAccountEntity {
     private String profilePhotoUrl;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "role")
     private RoleType role;
 
     private boolean isActive;

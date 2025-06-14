@@ -11,7 +11,6 @@ import com.example.collabtaskapi.utils.mappers.TaskMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
@@ -28,9 +27,10 @@ public class RepositoryTaskPortImpl implements RepositoryTaskPort {
     }
 
     @Override
-    public Optional<Task> findById(Integer id) {
-        Optional<JpaTaskEntity> taskEntity = this.jpaTaskRepository.findById(id);
-        return taskEntity.map(taskMapper::jpaTaskEntityToTask);
+    public Task findById(Integer id) {
+        JpaTaskEntity taskEntity = jpaTaskRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Task not found with id " + id));
+        return taskMapper.jpaTaskEntityToTask(taskEntity);
     }
 
     @Override
@@ -51,7 +51,7 @@ public class RepositoryTaskPortImpl implements RepositoryTaskPort {
 
     @Override
     public void delete(Integer id) {
-        JpaTaskEntity jpaTaskEntity = this.jpaTaskRepository.findById(id).
+        JpaTaskEntity jpaTaskEntity = jpaTaskRepository.findById(id).
                 orElseThrow(() -> new EntityNotFoundException("Task not found with id " + id));
         jpaTaskRepository.delete(jpaTaskEntity);
     }

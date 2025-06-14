@@ -4,6 +4,7 @@ import com.example.collabtaskapi.application.ports.inbound.RestAccountUseCase;
 import com.example.collabtaskapi.application.ports.inbound.RestAuthUseCase;
 import com.example.collabtaskapi.application.ports.inbound.RestTaskUseCase;
 import com.example.collabtaskapi.application.ports.inbound.SecurityAccountUseCase;
+import com.example.collabtaskapi.application.ports.inbound.SecurityTokenUseCase;
 import com.example.collabtaskapi.application.ports.outbound.RepositoryAccountPort;
 import com.example.collabtaskapi.application.ports.outbound.RepositoryTaskPort;
 import com.example.collabtaskapi.application.ports.outbound.RepositoryTokenPort;
@@ -14,6 +15,7 @@ import com.example.collabtaskapi.application.usecases.RestAccountUseCaseImpl;
 import com.example.collabtaskapi.application.usecases.RestAuthUseCaseImpl;
 import com.example.collabtaskapi.application.usecases.RestTaskUseCaseImpl;
 import com.example.collabtaskapi.application.usecases.SecurityAccountUseCaseImpl;
+import com.example.collabtaskapi.application.usecases.SecurityTokenUseCaseImpl;
 import com.example.collabtaskapi.utils.mappers.AccountMapper;
 import com.example.collabtaskapi.utils.mappers.TaskMapper;
 import org.springframework.context.annotation.Bean;
@@ -40,5 +42,10 @@ public class DependencyInjectionConfig {
     @Bean
     public SecurityAccountUseCase securityAccountUseCase(RepositoryAccountPort repositoryAccountPort) {
         return new SecurityAccountUseCaseImpl(repositoryAccountPort);
+    }
+
+    @Bean
+    public SecurityTokenUseCase securityTokenUseCase(RepositoryTokenPort repositoryTokenPort) {
+        return new SecurityTokenUseCaseImpl(repositoryTokenPort);
     }
 }

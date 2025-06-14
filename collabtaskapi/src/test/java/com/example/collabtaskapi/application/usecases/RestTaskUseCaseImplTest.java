@@ -15,7 +15,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -74,7 +73,7 @@ public class RestTaskUseCaseImplTest {
         Task task = TaskFactory.taskFactory();
         TaskResponse response = TaskFactory.taskResponseFactory();
 
-        when(repositoryTaskPort.findById(1)).thenReturn(Optional.of(task));
+        when(repositoryTaskPort.findById(1)).thenReturn(task);
         when(taskMapper.taskToTaskResponse(task)).thenReturn(response);
 
         TaskResponse result = restTaskUseCase.getTaskById(1);
@@ -84,7 +83,7 @@ public class RestTaskUseCaseImplTest {
 
     @Test
     void shouldThrowExceptionWhenTaskNotFoundById() {
-        when(repositoryTaskPort.findById(99)).thenReturn(Optional.empty());
+        when(repositoryTaskPort.findById(99)).thenThrow(new EntityNotFoundException(" "));
 
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class,
                 () -> restTaskUseCase.getTaskById(99));
@@ -96,7 +95,7 @@ public class RestTaskUseCaseImplTest {
     void shouldDeleteTaskByIdWhenExists() {
         Task task = TaskFactory.taskFactory();
 
-        when(repositoryTaskPort.findById(1)).thenReturn(Optional.of(task));
+        when(repositoryTaskPort.findById(1)).thenReturn(null);
 
         restTaskUseCase.deleteTaskByID(1);
 
@@ -105,7 +104,7 @@ public class RestTaskUseCaseImplTest {
 
     @Test
     void shouldThrowExceptionWhenDeleteTaskNotFound() {
-        when(repositoryTaskPort.findById(99)).thenReturn(Optional.empty());
+        when(repositoryTaskPort.findById(99)).thenThrow(new EntityNotFoundException(" "));
 
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class,
                 () -> restTaskUseCase.deleteTaskByID(99));
@@ -119,7 +118,7 @@ public class RestTaskUseCaseImplTest {
         Task task = TaskFactory.taskFactory();
         TaskResponse response = TaskFactory.taskResponseFactory();
 
-        when(repositoryTaskPort.findById(1)).thenReturn(Optional.of(task));
+        when(repositoryTaskPort.findById(1)).thenReturn(task);
         when(repositoryTaskPort.save(task)).thenReturn(task);
         when(taskMapper.taskToTaskResponse(task)).thenReturn(response);
 
@@ -132,7 +131,7 @@ public class RestTaskUseCaseImplTest {
     @Test
     void shouldThrowExceptionWhenUpdateTaskNotFound() {
         TaskRequest request = TaskFactory.taskRequestFactory();
-        when(repositoryTaskPort.findById(99)).thenReturn(Optional.empty());
+        when(repositoryTaskPort.findById(99)).thenThrow(new EntityNotFoundException(" "));
 
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class,
                 () -> restTaskUseCase.updateTaskById(99, request));
