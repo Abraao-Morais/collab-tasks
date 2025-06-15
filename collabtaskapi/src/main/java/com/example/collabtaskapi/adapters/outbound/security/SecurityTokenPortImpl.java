@@ -18,10 +18,7 @@ public class SecurityTokenPortImpl implements SecurityTokenPort {
         this.jwtEncoder = jwtEncoder;
     }
 
-    public String generateToken(String userName, RoleType role) {
-        Instant now = Instant.now();
-        long expiry = 3600L;
-
+    public String generateToken(String userName, RoleType role, Instant now, long expiry) {
         var claims = JwtClaimsSet.builder()
                 .issuer("collab")
                 .issuedAt(now)
@@ -32,4 +29,5 @@ public class SecurityTokenPortImpl implements SecurityTokenPort {
 
         return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
     }
+
 }

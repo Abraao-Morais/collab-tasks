@@ -10,6 +10,6 @@ public interface RepositoryTaskPort {
     Optional<Task> findById(Integer id);
     List<Task> findAllByAccountId(Integer accountId);
     Task save(Task task);
-    void delete(Integer id);
+    void delete(Task task);
 
 }

@@ -11,6 +11,5 @@ public interface RepositoryAccountPort {
     Optional<Account> findByName(String name);
     List<Account> findAll();
     Account save(Account account);
-    void delete(Integer id);
 
 }

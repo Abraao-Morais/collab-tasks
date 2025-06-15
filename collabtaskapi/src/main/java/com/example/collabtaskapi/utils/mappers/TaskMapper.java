@@ -12,5 +12,6 @@ public interface TaskMapper {
     Task jpaTaskEntityToTask(JpaTaskEntity jpaTaskEntity);
     Task taskRequestToTask(TaskRequest taskRequest);
     TaskResponse taskToTaskResponse(Task task);
+    JpaTaskEntity taskTTaskEntity(Task task);
 
 }

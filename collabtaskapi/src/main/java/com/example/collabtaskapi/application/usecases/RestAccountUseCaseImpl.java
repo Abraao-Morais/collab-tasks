@@ -49,7 +49,6 @@ public class RestAccountUseCaseImpl implements RestAccountUseCase {
     public void deleteAccountByID(Integer id) {
         Account existingAccount = repositoryAccountPort.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Account not found with id " + id));
-
         existingAccount.setActive(false);
         repositoryAccountPort.save(existingAccount);
     }
@@ -58,7 +57,6 @@ public class RestAccountUseCaseImpl implements RestAccountUseCase {
     public AccountResponse updateAccountByID(Integer id, AccountRequest accountRequest) {
         Account existingAccount = repositoryAccountPort.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Account not found with id " + id));
-
         existingAccount.setName(accountRequest.getName());
         existingAccount.setEmail(accountRequest.getEmail());
         if (accountRequest.getProfilePhotoUrl() != null){

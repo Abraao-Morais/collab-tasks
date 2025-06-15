@@ -1,5 +1,6 @@
 package com.example.collabtaskapi.infrastructure.config;
 
+import com.example.collabtaskapi.adapters.inbound.security.SecurityTokenFilter;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
@@ -21,10 +22,10 @@ import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
+import org.springframework.security.oauth2.server.resource.web.authentication.BearerTokenAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-
 
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
@@ -41,9 +42,11 @@ public class SecurityConfig {
     private RSAPrivateKey priv;
 
     private final UserDetailsService userDetailsService;
+    private final SecurityTokenFilter securityTokenFilter;
 
-    public SecurityConfig(UserDetailsService userDetailsService) {
+    public SecurityConfig(UserDetailsService userDetailsService, SecurityTokenFilter securityTokenFilter) {
         this.userDetailsService = userDetailsService;
+        this.securityTokenFilter = securityTokenFilter;
     }
 
     @Bean
@@ -58,13 +61,12 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
                         .requestMatchers("/swagger-ui/**",
                                 "/swagger-ui.html",
                                 "/v3/api-docs/**",
                                 "/swagger-resources/**",
                                 "/webjars/**").permitAll()
-                        // Permissões por role
+                        .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/task/**").hasAnyRole("ADMIN", "USER", "VIEW")
                         .requestMatchers(HttpMethod.GET, "/account/**").hasAnyRole("ADMIN", "USER")
                         .requestMatchers(HttpMethod.POST, "/task").hasAnyRole("ADMIN", "USER")
@@ -72,11 +74,10 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PUT, "/**").hasAnyRole("ADMIN", "USER")
                         .requestMatchers(HttpMethod.DELETE, "/task/**").hasAnyRole("ADMIN", "USER")
                         .requestMatchers(HttpMethod.DELETE, "/account/**").hasRole("ADMIN")
-
-
                         .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(conf -> conf.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())))
+                .addFilterBefore(securityTokenFilter, BearerTokenAuthenticationFilter.class)
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults());
 
@@ -89,7 +90,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    JwtEncoder jwtEnconder() {
+    JwtEncoder jwtEncoder() {
         var jwk = new RSAKey.Builder(key).privateKey(priv).build();
         var jwks = new ImmutableJWKSet<>(new JWKSet(jwk));
         return new NimbusJwtEncoder(jwks);

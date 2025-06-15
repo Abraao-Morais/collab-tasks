@@ -4,7 +4,6 @@ import com.example.collabtaskapi.adapters.outbound.persistence.entities.JpaAccou
 import com.example.collabtaskapi.adapters.outbound.persistence.repositories.JpaAccountRepository;
 import com.example.collabtaskapi.domain.Account;
 import com.example.collabtaskapi.application.ports.outbound.RepositoryAccountPort;
-import com.example.collabtaskapi.infrastructure.exceptions.EntityNotFoundException;
 import com.example.collabtaskapi.utils.mappers.AccountMapper;
 import org.springframework.stereotype.Component;
 
@@ -24,14 +23,12 @@ public class RepositoryAccountPortImpl implements RepositoryAccountPort {
 
     @Override
     public Optional<Account> findById(Integer id) {
-        Optional<JpaAccountEntity> accountEntity = this.jpaAccountRepository.findById(id);
-        return accountEntity.map(accountMapper::jpaAccountEntityToAccount);
+        return jpaAccountRepository.findById(id).map(accountMapper::jpaAccountEntityToAccount);
     }
 
     @Override
     public Optional<Account> findByName(String name) {
-        Optional<JpaAccountEntity> accountEntity = this.jpaAccountRepository.findByName(name);
-        return accountEntity.map(accountMapper::jpaAccountEntityToAccount);
+        return jpaAccountRepository.findByName(name).map(accountMapper::jpaAccountEntityToAccount);
     }
 
     @Override
@@ -44,14 +41,8 @@ public class RepositoryAccountPortImpl implements RepositoryAccountPort {
     @Override
     public Account save(Account account) {
         JpaAccountEntity accountEntity = new JpaAccountEntity(account);
-        this.jpaAccountRepository.save(accountEntity);
+        accountEntity = this.jpaAccountRepository.save(accountEntity);
         return accountMapper.jpaAccountEntityToAccount(accountEntity);
     }
 
-    @Override
-    public void delete(Integer id) {
-        JpaAccountEntity entity = jpaAccountRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Account not found with id " + id));
-        jpaAccountRepository.delete(entity);
-    }
 }

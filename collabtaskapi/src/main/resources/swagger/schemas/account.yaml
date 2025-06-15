@@ -23,7 +23,7 @@ AccountResponse:
       example: true
     role:
       type: string
-      enum: [ USER, ADMIN, VIEW ]    # <- atualizado aqui
+      enum: [ USER, ADMIN, VIEW ]
       example: "ADMIN"
 
 AccountRequest:
@@ -55,5 +55,5 @@ AccountRequest:
       example: "https://www.thispersondoesnotexist.com"
     role:
       type: string
-      enum: [ USER, ADMIN, VIEW ]    # <- atualizado aqui
+      enum: [ USER, ADMIN, VIEW ]
       example: "VIEW"

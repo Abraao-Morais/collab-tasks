@@ -10,4 +10,5 @@ public interface RepositoryTokenPort {
     List<Token> findAllValidTokenByAccountId(Integer accountId);
     Optional<Token> findByToken(String token);
     Token save(Token token);
+    void saveAll(List<Token> tokens);
 }

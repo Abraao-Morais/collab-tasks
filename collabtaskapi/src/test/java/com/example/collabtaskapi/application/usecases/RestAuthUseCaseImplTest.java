@@ -33,12 +33,12 @@ public class RestAuthUseCaseImplTest {
         String expectedToken = "mocked.jwt.token";
 
         when(authenticationManager.authenticate(inputAuthentication)).thenReturn(authenticated);
-        when(securityTokenPort.generateToken(authenticated)).thenReturn(expectedToken);
+        when(securityTokenPort.generateJwtToken(authenticated)).thenReturn(expectedToken);
 
         String actualToken = restAuthUseCase.login(inputAuthentication);
 
         assertEquals(expectedToken, actualToken);
         verify(authenticationManager).authenticate(inputAuthentication);
-        verify(securityTokenPort).generateToken(authenticated);
+        verify(securityTokenPort).generateJwtToken(authenticated);
     }
 }

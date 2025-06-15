@@ -16,12 +16,6 @@ public class UserDetailsImpl implements UserDetails {
         this.account = account;
     }
 
-    /*
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(() -> "read");
-    }*/
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_" + account.getRole().name()));
@@ -54,6 +48,6 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return account.getIsActive();
+        return account.isActive();
     }
 }

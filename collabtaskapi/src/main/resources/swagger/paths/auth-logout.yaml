@@ -1,0 +1,11 @@
+post:
+  tags:
+    - auth
+  summary: Log out and revoke the JWT token
+  description: Revoke JWT token by adding to blacklist
+  operationId: logout
+  responses:
+    '204':
+      description: Logout successful
+    '401':
+      description: Invalid or unauthorized token
