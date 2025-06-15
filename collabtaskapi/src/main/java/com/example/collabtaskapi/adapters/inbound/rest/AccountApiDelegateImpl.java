@@ -36,10 +36,11 @@ public class AccountApiDelegateImpl implements AccountApiDelegate {
         AccountResponse accountResponse = restAccountUseCase.getAccountById(id);
         return ResponseEntity.ok(accountResponse);
     }
+
     @Override
     public ResponseEntity<List<AccountResponse>> listAllAccounts() {
         List<AccountResponse> accountResponses = restAccountUseCase.listAllAccounts();
-        if (accountResponses.isEmpty()){
+        if (accountResponses.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(accountResponses);

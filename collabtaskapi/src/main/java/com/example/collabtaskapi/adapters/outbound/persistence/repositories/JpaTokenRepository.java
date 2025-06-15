@@ -12,7 +12,7 @@ public interface JpaTokenRepository extends JpaRepository<JpaTokenEntity, Intege
 
     @Query("""
             select t from JpaTokenEntity t inner join JpaAccountEntity a on t.account.id = a.id
-            where a.id = :accountId and (t.expired = false or t.revoked = false)
+            where a.id = :accountId and t.revoked = false
             """)
     List<JpaTokenEntity> findAllValidTokenByAccountId(@Param("accountId") Integer accountId);
 

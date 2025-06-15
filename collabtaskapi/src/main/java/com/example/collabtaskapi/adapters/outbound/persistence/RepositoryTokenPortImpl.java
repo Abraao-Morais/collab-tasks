@@ -1,14 +1,13 @@
 package com.example.collabtaskapi.adapters.outbound.persistence;
 
-import com.example.collabtaskapi.adapters.outbound.persistence.entities.JpaTokenEntity;
 import com.example.collabtaskapi.adapters.outbound.persistence.repositories.JpaTokenRepository;
 import com.example.collabtaskapi.application.ports.outbound.RepositoryTokenPort;
 import com.example.collabtaskapi.domain.Token;
-import com.example.collabtaskapi.infrastructure.exceptions.EntityNotFoundException;
 import com.example.collabtaskapi.utils.mappers.TokenMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class RepositoryTokenPortImpl implements RepositoryTokenPort {
@@ -29,10 +28,8 @@ public class RepositoryTokenPortImpl implements RepositoryTokenPort {
     }
 
     @Override
-    public Token findByToken(String token) {
-        JpaTokenEntity tokenEntity = jpaTokenRepository.findByToken(token)
-                .orElseThrow(() -> new EntityNotFoundException("Token not found with token " + token));
-        return tokenMapper.jpaTokenEntityToToken(tokenEntity);
+    public Optional<Token> findByToken(String token) {
+        return jpaTokenRepository.findByToken(token).map(tokenMapper::jpaTokenEntityToToken);
     }
 
     @Override
@@ -42,10 +39,7 @@ public class RepositoryTokenPortImpl implements RepositoryTokenPort {
     }
 
     @Override
-    public List<Token>  saveAll(List<Token> tokens) {
-        var entities = jpaTokenRepository.saveAll(tokens.stream().map(tokenMapper::tokenToJpaTokenEntity).toList());
-        return entities.stream()
-                .map(tokenMapper::jpaTokenEntityToToken)
-                .toList();
+    public void saveAll(List<Token> tokens) {
+      jpaTokenRepository.saveAll(tokens.stream().map(tokenMapper::tokenToJpaTokenEntity).toList());
     }
 }

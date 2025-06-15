@@ -10,6 +10,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Table;
+import jakarta.persistence.Column;
 import lombok.Data;
 import lombok.Builder;
 import lombok.AllArgsConstructor;
@@ -30,14 +31,15 @@ public class JpaTokenEntity {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Integer id;
+    @Column(length = 512, nullable = false, unique = true)
     private String token;
 
     @Enumerated(EnumType.STRING)
     private TokenType tokenType;
-    private boolean expired;
     private boolean revoked;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "account_id", nullable = false)
     private JpaAccountEntity account;
+
 }

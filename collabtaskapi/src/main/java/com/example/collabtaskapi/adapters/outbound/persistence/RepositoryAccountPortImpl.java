@@ -4,11 +4,11 @@ import com.example.collabtaskapi.adapters.outbound.persistence.entities.JpaAccou
 import com.example.collabtaskapi.adapters.outbound.persistence.repositories.JpaAccountRepository;
 import com.example.collabtaskapi.domain.Account;
 import com.example.collabtaskapi.application.ports.outbound.RepositoryAccountPort;
-import com.example.collabtaskapi.infrastructure.exceptions.EntityNotFoundException;
 import com.example.collabtaskapi.utils.mappers.AccountMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class RepositoryAccountPortImpl implements RepositoryAccountPort {
@@ -22,17 +22,13 @@ public class RepositoryAccountPortImpl implements RepositoryAccountPort {
     }
 
     @Override
-    public Account findById(Integer id) {
-        JpaAccountEntity accountEntity = this.jpaAccountRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Account not found with id " + id));
-        return accountMapper.jpaAccountEntityToAccount(accountEntity);
+    public Optional<Account> findById(Integer id) {
+        return jpaAccountRepository.findById(id).map(accountMapper::jpaAccountEntityToAccount);
     }
 
     @Override
-    public Account findByName(String name) {
-        JpaAccountEntity accountEntity = this.jpaAccountRepository.findByName(name)
-                .orElseThrow(() -> new EntityNotFoundException("Account not found with name " + name));
-        return accountMapper.jpaAccountEntityToAccount(accountEntity);
+    public Optional<Account> findByName(String name) {
+        return jpaAccountRepository.findByName(name).map(accountMapper::jpaAccountEntityToAccount);
     }
 
     @Override
@@ -49,10 +45,4 @@ public class RepositoryAccountPortImpl implements RepositoryAccountPort {
         return accountMapper.jpaAccountEntityToAccount(accountEntity);
     }
 
-    @Override
-    public void delete(Integer id) {
-        JpaAccountEntity entity = jpaAccountRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Account not found with id " + id));
-        jpaAccountRepository.delete(entity);
-    }
 }

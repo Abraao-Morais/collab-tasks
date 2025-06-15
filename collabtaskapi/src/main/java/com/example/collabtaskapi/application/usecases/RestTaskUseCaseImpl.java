@@ -7,6 +7,7 @@ import com.example.collabtaskapi.domain.Task;
 import com.example.collabtaskapi.application.ports.outbound.RepositoryTaskPort;
 import com.example.collabtaskapi.dtos.TaskRequest;
 import com.example.collabtaskapi.dtos.TaskResponse;
+import com.example.collabtaskapi.infrastructure.exceptions.EntityNotFoundException;
 import com.example.collabtaskapi.utils.mappers.TaskMapper;
 
 import java.util.List;
@@ -41,19 +42,22 @@ public class RestTaskUseCaseImpl implements RestTaskUseCase {
 
     @Override
     public TaskResponse getTaskById(Integer id) {
-        Task task = repositoryTaskPort.findById(id);
+        Task task = repositoryTaskPort.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Task not found with id " + id));
         return taskMapper.taskToTaskResponse(task);
     }
 
     @Override
     public void deleteTaskByID(Integer id) {
-        Task task = repositoryTaskPort.findById(id);
-        repositoryTaskPort.delete(id);
+        Task task = repositoryTaskPort.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Task not found with id " + id));
+        repositoryTaskPort.delete(task);
     }
 
     @Override
     public TaskResponse updateTaskById(Integer id, TaskRequest taskRequest) {
-        Task task = repositoryTaskPort.findById(id);
+        Task task = repositoryTaskPort.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Task not found with id " + id));
 
         task.setTitle(taskRequest.getTitle());
         task.setDescription(taskRequest.getDescription());

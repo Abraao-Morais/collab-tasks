@@ -52,6 +52,6 @@ public class JpaAccountEntity {
         this.password = account.getPassword();
         this.profilePhotoUrl = account.getProfilePhotoUrl();
         this.role = account.getRole();
-        this.isActive = account.getIsActive();
+        this.isActive = account.isActive();
     }
 }

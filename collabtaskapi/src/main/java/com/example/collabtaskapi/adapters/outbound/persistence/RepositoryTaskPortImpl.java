@@ -5,12 +5,12 @@ import com.example.collabtaskapi.adapters.outbound.persistence.repositories.JpaT
 import com.example.collabtaskapi.domain.Account;
 import com.example.collabtaskapi.domain.Task;
 import com.example.collabtaskapi.application.ports.outbound.RepositoryTaskPort;
-import com.example.collabtaskapi.infrastructure.exceptions.EntityNotFoundException;
 import com.example.collabtaskapi.utils.mappers.AccountMapper;
 import com.example.collabtaskapi.utils.mappers.TaskMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
@@ -27,10 +27,8 @@ public class RepositoryTaskPortImpl implements RepositoryTaskPort {
     }
 
     @Override
-    public Task findById(Integer id) {
-        JpaTaskEntity taskEntity = jpaTaskRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Task not found with id " + id));
-        return taskMapper.jpaTaskEntityToTask(taskEntity);
+    public Optional<Task> findById(Integer id) {
+        return jpaTaskRepository.findById(id).map(taskMapper::jpaTaskEntityToTask);
     }
 
     @Override
@@ -50,9 +48,7 @@ public class RepositoryTaskPortImpl implements RepositoryTaskPort {
 
 
     @Override
-    public void delete(Integer id) {
-        JpaTaskEntity jpaTaskEntity = jpaTaskRepository.findById(id).
-                orElseThrow(() -> new EntityNotFoundException("Task not found with id " + id));
-        jpaTaskRepository.delete(jpaTaskEntity);
+    public void delete(Task task) {
+        jpaTaskRepository.delete(taskMapper.taskTTaskEntity(task));
     }
 }

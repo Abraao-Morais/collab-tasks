@@ -6,6 +6,7 @@ import com.example.collabtaskapi.application.ports.inbound.RestAccountUseCase;
 import com.example.collabtaskapi.application.ports.outbound.RepositoryAccountPort;
 import com.example.collabtaskapi.dtos.AccountRequest;
 import com.example.collabtaskapi.dtos.AccountResponse;
+import com.example.collabtaskapi.infrastructure.exceptions.EntityNotFoundException;
 import com.example.collabtaskapi.utils.mappers.AccountMapper;
 
 import java.util.List;
@@ -39,20 +40,23 @@ public class RestAccountUseCaseImpl implements RestAccountUseCase {
 
     @Override
     public AccountResponse getAccountById(Integer id) {
-        Account account = repositoryAccountPort.findById(id);
+        Account account = repositoryAccountPort.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Account not found with id " + id));
         return accountMapper.accountToAccountResponse(account);
     }
 
     @Override
     public void deleteAccountByID(Integer id) {
-        Account existingAccount = repositoryAccountPort.findById(id);
+        Account existingAccount = repositoryAccountPort.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Account not found with id " + id));
         existingAccount.setActive(false);
         repositoryAccountPort.save(existingAccount);
     }
 
     @Override
     public AccountResponse updateAccountByID(Integer id, AccountRequest accountRequest) {
-        Account existingAccount = repositoryAccountPort.findById(id);
+        Account existingAccount = repositoryAccountPort.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Account not found with id " + id));
         existingAccount.setName(accountRequest.getName());
         existingAccount.setEmail(accountRequest.getEmail());
         if (accountRequest.getProfilePhotoUrl() != null){

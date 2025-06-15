@@ -3,6 +3,7 @@ package com.example.collabtaskapi.application.usecases;
 import com.example.collabtaskapi.application.ports.inbound.SecurityTokenUseCase;
 import com.example.collabtaskapi.application.ports.outbound.RepositoryTokenPort;
 import com.example.collabtaskapi.domain.Token;
+import com.example.collabtaskapi.infrastructure.exceptions.EntityNotFoundException;
 
 public class SecurityTokenUseCaseImpl implements SecurityTokenUseCase {
 
@@ -13,7 +14,9 @@ public class SecurityTokenUseCaseImpl implements SecurityTokenUseCase {
     }
 
     @Override
-    public Token findByToken(String token) {
-        return repositoryTokenPort.findByToken(token);
+    public boolean tokenIsValid(String jwtToken) {
+        Token token = repositoryTokenPort.findByToken(jwtToken)
+                .orElseThrow(() -> new EntityNotFoundException("Token not found with token " + jwtToken));
+        return token.isRevoked();
     }
 }
