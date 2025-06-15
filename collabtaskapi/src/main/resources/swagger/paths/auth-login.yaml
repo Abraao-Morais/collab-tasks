@@ -2,9 +2,9 @@ post:
     tags:
       - auth
     summary: Authenticate user and generate a JWT token
-    description: Endpoint público para autenticação do usuário. Retorna token JWT.
+    description: Public endpoint for user authentication. Returns JWT token.
     operationId: login
-    security: []   # Torna esse endpoint público, sem autenticação requerida
+    security: []
     requestBody:
       required: true
       content:
@@ -13,10 +13,10 @@ post:
             $ref: '../schemas/auth.yaml#/AuthRequest'
     responses:
       '200':
-        description: Token JWT gerado com sucesso
+        description: JWT token generated successfully
         content:
           application/json:
             schema:
               $ref: '../schemas/auth.yaml#/AuthResponse'
       '401':
-        description: Credenciais inválidas
+        description: Invalid credentials

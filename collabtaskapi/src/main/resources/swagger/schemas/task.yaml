@@ -3,10 +3,10 @@ TaskRequest:
   properties:
     title:
       type: string
-      example: "Tarefa 1"
+      example: "Task 1"
     description:
       type: string
-      example: "Descrição da tarefa 1"
+      example: "Task 1 description"
     status:
       type: string
       enum:
@@ -33,10 +33,10 @@ TaskResponse:
       example: 101
     title:
       type: string
-      example: "Tarefa 1"
+      example: "Task 1"
     description:
       type: string
-      example: "Descrição da tarefa 1"
+      example: "Task 1 description"
     status:
       type: string
       enum:

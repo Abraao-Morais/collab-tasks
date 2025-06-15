@@ -31,9 +31,7 @@ public class SecurityTokenFilter extends OncePerRequestFilter {
             return;
         }
 
-        String token = getTokenFromHeader(request);
-
-        if (nonNull(token) && securityTokenUseCase.tokenIsValid(token)) {
+        if (securityTokenUseCase.tokenIsValid(getTokenFromHeader(request))) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token revogado");
             return;
         }

@@ -31,6 +31,7 @@ public class RestAuthUseCaseImpl implements RestAuthUseCase {
     @Override
     public String login(AuthRequest authRequest){
         securityAuthenticationPort.authenticate(authRequest.getUsername(), authRequest.getPassword());
+
         var account = repositoryAccountPort.findByName(authRequest.getUsername())
                 .orElseThrow(() -> new EntityNotFoundException("Account not found with name " + authRequest.getUsername()));
 
@@ -39,6 +40,7 @@ public class RestAuthUseCaseImpl implements RestAuthUseCase {
         saveToken(jwtToken, account);
         return jwtToken;
     }
+
     @Override
     public void logout(String jwtToken){
         var token = repositoryTokenPort.findByToken(jwtToken)
