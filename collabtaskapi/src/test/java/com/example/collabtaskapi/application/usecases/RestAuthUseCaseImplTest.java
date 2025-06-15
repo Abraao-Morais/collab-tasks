@@ -1,6 +1,7 @@
 package com.example.collabtaskapi.application.usecases;
 
 import com.example.collabtaskapi.application.ports.outbound.SecurityTokenPort;
+import com.example.collabtaskapi.dtos.AuthRequest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -33,12 +34,12 @@ public class RestAuthUseCaseImplTest {
         String expectedToken = "mocked.jwt.token";
 
         when(authenticationManager.authenticate(inputAuthentication)).thenReturn(authenticated);
-        when(securityTokenPort.generateToken(authenticated)).thenReturn(expectedToken);
+        when(securityTokenPort.generateToken(String.valueOf(authenticated))).thenReturn(expectedToken);
 
-        String actualToken = restAuthUseCase.login(inputAuthentication);
+        String actualToken = restAuthUseCase.login((AuthRequest) inputAuthentication);
 
         assertEquals(expectedToken, actualToken);
         verify(authenticationManager).authenticate(inputAuthentication);
-        verify(securityTokenPort).generateToken(authenticated);
+        verify(securityTokenPort).generateToken(String.valueOf(authenticated));
     }
 }

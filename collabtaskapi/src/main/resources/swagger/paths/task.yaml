@@ -17,21 +17,3 @@ post:
         application/json:
           schema:
             $ref: '../schemas/task.yaml#/TaskResponse'
-
-get:
-  summary: Listar tarefas atribuídas a um usuário
-  parameters:
-    - in: query
-      name: assignedTo
-      required: true
-      schema:
-        type: integer
-  responses:
-    '200':
-      description: Lista de tarefas atribuídas
-      content:
-        application/json:
-          schema:
-            type: array
-            items:
-              $ref: '../schemas/task.yaml#/TaskResponse'

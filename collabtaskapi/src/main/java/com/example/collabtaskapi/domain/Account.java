@@ -2,7 +2,7 @@ package com.example.collabtaskapi.domain;
 
 import java.util.Objects;
 
-public class Account {
+public class    Account {
 
     private Integer id;
     private String name;

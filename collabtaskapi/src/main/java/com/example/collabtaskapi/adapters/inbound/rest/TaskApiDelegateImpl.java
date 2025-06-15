@@ -2,12 +2,17 @@ package com.example.collabtaskapi.adapters.inbound.rest;
 
 import com.example.collabtaskapi.application.ports.inbound.RestTaskUseCase;
 import com.example.collabtaskapi.controllers.TaskApiDelegate;
+import com.example.collabtaskapi.domain.enums.Priority;
+import com.example.collabtaskapi.domain.enums.Status;
 import com.example.collabtaskapi.dtos.TaskRequest;
 import com.example.collabtaskapi.dtos.TaskResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import java.net.URI;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 
 @Component
@@ -34,7 +39,7 @@ public class TaskApiDelegateImpl implements TaskApiDelegate {
 
     @Override
     public ResponseEntity<Void> deleteTaskById(Integer id) {
-        restTaskUseCase.deleteTaskByID(id);
+        restTaskUseCase.deleteTaskById(id);
         return ResponseEntity.noContent().build();
     }
 
@@ -45,8 +50,50 @@ public class TaskApiDelegateImpl implements TaskApiDelegate {
     }
 
     @Override
-    public ResponseEntity<List<TaskResponse>> taskGet(Integer assignedTo) {
-        List<TaskResponse> responseList = restTaskUseCase.findAllByAccountId(assignedTo);
+    public ResponseEntity<List<TaskResponse>> getAllTasks() {
+        List<TaskResponse> tasks = restTaskUseCase.listAllTasks();
+        if (tasks.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(tasks);
+    }
+
+    @Override
+    public ResponseEntity<List<TaskResponse>> getTasksByAssignedTo(Integer assignedTo,
+                                                                   String status,
+                                                                   String priority,
+                                                                   Date dueBefore) {
+        LocalDate dueBeforeDate = null;
+        if (dueBefore != null) {
+            dueBeforeDate = dueBefore.toInstant()
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDate();
+        }
+
+        // Conversão segura de status
+        Status statusEnum = null;
+        if (status != null && !status.isBlank()) {
+            try {
+                statusEnum = Status.valueOf(status.toUpperCase());
+            } catch (IllegalArgumentException e) {
+                return ResponseEntity.badRequest().body(null); // ou resposta com mensagem
+            }
+        }
+
+        // Conversão segura de priority
+        Priority priorityEnum = null;
+        if (priority != null && !priority.isBlank()) {
+            try {
+                priorityEnum = Priority.valueOf(priority.toUpperCase());
+            } catch (IllegalArgumentException e) {
+                return ResponseEntity.badRequest().body(null); // ou resposta com mensagem
+            }
+        }
+
+        List<TaskResponse> responseList = restTaskUseCase.listTasksByFilters(
+                assignedTo, statusEnum, priorityEnum, dueBeforeDate
+        );
+
         if (responseList.isEmpty()) {
             return ResponseEntity.noContent().build();
         }

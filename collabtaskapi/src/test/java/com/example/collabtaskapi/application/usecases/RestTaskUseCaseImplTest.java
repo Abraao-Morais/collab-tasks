@@ -1,6 +1,8 @@
 package com.example.collabtaskapi.application.usecases;
 
 import com.example.collabtaskapi.domain.Task;
+import com.example.collabtaskapi.domain.enums.Priority;
+import com.example.collabtaskapi.domain.enums.Status;
 import com.example.collabtaskapi.application.ports.outbound.RepositoryTaskPort;
 import com.example.collabtaskapi.dtos.TaskRequest;
 import com.example.collabtaskapi.dtos.TaskResponse;
@@ -13,15 +15,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class RestTaskUseCaseImplTest {
@@ -34,23 +34,6 @@ public class RestTaskUseCaseImplTest {
 
     @InjectMocks
     private RestTaskUseCaseImpl restTaskUseCase;
-
-    @Test
-    void shouldReturnListOfTaskResponsesByAccountId() {
-        Task task1 = TaskFactory.taskFactory();
-        Task task2 = TaskFactory.taskFactory();
-        TaskResponse response1 = TaskFactory.taskResponseFactory();
-        TaskResponse response2 = TaskFactory.taskResponseFactory();
-
-        when(repositoryTaskPort.findAllByAccountId(1)).thenReturn(Arrays.asList(task1, task2));
-        when(taskMapper.taskToTaskResponse(task1)).thenReturn(response1);
-        when(taskMapper.taskToTaskResponse(task2)).thenReturn(response2);
-
-        List<TaskResponse> result = restTaskUseCase.findAllByAccountId(1);
-
-        assertEquals(2, result.size());
-        verify(repositoryTaskPort).findAllByAccountId(1);
-    }
 
     @Test
     void shouldCreateAndReturnNewTaskResponse() {
@@ -98,7 +81,7 @@ public class RestTaskUseCaseImplTest {
 
         when(repositoryTaskPort.findById(1)).thenReturn(Optional.of(task));
 
-        restTaskUseCase.deleteTaskByID(1);
+        restTaskUseCase.deleteTaskById(1);
 
         verify(repositoryTaskPort).delete(1);
     }
@@ -108,7 +91,7 @@ public class RestTaskUseCaseImplTest {
         when(repositoryTaskPort.findById(99)).thenReturn(Optional.empty());
 
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class,
-                () -> restTaskUseCase.deleteTaskByID(99));
+                () -> restTaskUseCase.deleteTaskById(99));
 
         assertEquals("Task not found with id 99", exception.getMessage());
     }
@@ -138,5 +121,39 @@ public class RestTaskUseCaseImplTest {
                 () -> restTaskUseCase.updateTaskById(99, request));
 
         assertEquals("Task not found with id 99", exception.getMessage());
+    }
+
+    @Test
+    void shouldReturnListOfAllTasks() {
+        List<Task> tasks = Arrays.asList(TaskFactory.taskFactory(), TaskFactory.taskFactory());
+        List<TaskResponse> responses = Arrays.asList(TaskFactory.taskResponseFactory(), TaskFactory.taskResponseFactory());
+
+        when(repositoryTaskPort.findAll()).thenReturn(tasks);
+        when(taskMapper.tasksToTaskResponses(tasks)).thenReturn(responses);
+
+        List<TaskResponse> result = restTaskUseCase.listAllTasks();
+
+        assertEquals(2, result.size());
+        verify(repositoryTaskPort).findAll();
+    }
+
+    @Test
+    void shouldReturnListOfFilteredTasks() {
+        Integer assignedTo = 1;
+        Status status = Status.TO_DO;
+        Priority priority = Priority.HIGH;
+        LocalDate dueBefore = LocalDate.now();
+
+        List<Task> filteredTasks = Arrays.asList(TaskFactory.taskFactory(), TaskFactory.taskFactory());
+        List<TaskResponse> filteredResponses = Arrays.asList(TaskFactory.taskResponseFactory(), TaskFactory.taskResponseFactory());
+
+        when(repositoryTaskPort.findByFilters(eq(assignedTo), eq(status), eq(priority), eq(dueBefore.plusDays(1))))
+                .thenReturn(filteredTasks);
+        when(taskMapper.tasksToTaskResponses(filteredTasks)).thenReturn(filteredResponses);
+
+        List<TaskResponse> result = restTaskUseCase.listTasksByFilters(assignedTo, status, priority, dueBefore);
+
+        assertEquals(2, result.size());
+        verify(repositoryTaskPort).findByFilters(eq(assignedTo), eq(status), eq(priority), eq(dueBefore.plusDays(1)));
     }
 }
