@@ -5,10 +5,13 @@ import com.example.collabtaskapi.adapters.outbound.persistence.repositories.JpaT
 import com.example.collabtaskapi.domain.Account;
 import com.example.collabtaskapi.domain.Task;
 import com.example.collabtaskapi.application.ports.outbound.RepositoryTaskPort;
+import com.example.collabtaskapi.domain.enums.Priority;
+import com.example.collabtaskapi.domain.enums.Status;
 import com.example.collabtaskapi.utils.mappers.AccountMapper;
 import com.example.collabtaskapi.utils.mappers.TaskMapper;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -51,4 +54,21 @@ public class RepositoryTaskPortImpl implements RepositoryTaskPort {
     public void delete(Task task) {
         jpaTaskRepository.delete(taskMapper.taskTTaskEntity(task));
     }
+
+    @Override
+    public List<Task> findByFilters(Integer accountId, Status status, Priority priority, LocalDate dueBefore) {
+        List<JpaTaskEntity> entities = jpaTaskRepository.findByFilters(accountId, status, priority, dueBefore);
+
+        return entities.stream()
+                .map(taskMapper::jpaTaskEntityToTask)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Task> findAll() {
+        return this.jpaTaskRepository.findAll()
+                .stream()
+                .map(taskMapper::jpaTaskEntityToTask).toList();
+    }
+
 }

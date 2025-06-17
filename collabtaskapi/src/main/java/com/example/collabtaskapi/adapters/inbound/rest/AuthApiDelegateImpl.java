@@ -41,4 +41,5 @@ public class AuthApiDelegateImpl implements AuthApiDelegate {
         }
         return null;
     }
+
 }

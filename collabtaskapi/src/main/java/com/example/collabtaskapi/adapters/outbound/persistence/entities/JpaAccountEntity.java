@@ -40,7 +40,7 @@ public class JpaAccountEntity {
     @Enumerated(EnumType.STRING)
     private RoleType role;
 
-    private boolean isActive;
+    private boolean active;
 
     @OneToMany(mappedBy = "account")
     private List<JpaTokenEntity> tokens;
@@ -52,6 +52,6 @@ public class JpaAccountEntity {
         this.password = account.getPassword();
         this.profilePhotoUrl = account.getProfilePhotoUrl();
         this.role = account.getRole();
-        this.isActive = account.isActive();
+        this.active = account.isActive();
     }
 }

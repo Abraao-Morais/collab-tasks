@@ -42,4 +42,5 @@ public class RepositoryTokenPortImpl implements RepositoryTokenPort {
     public void saveAll(List<Token> tokens) {
       jpaTokenRepository.saveAll(tokens.stream().map(tokenMapper::tokenToJpaTokenEntity).toList());
     }
+
 }

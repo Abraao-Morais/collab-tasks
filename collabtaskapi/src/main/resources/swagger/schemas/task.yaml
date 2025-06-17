@@ -3,27 +3,22 @@ TaskRequest:
   properties:
     title:
       type: string
-      example: "Task 1"
+      example: "Tarefa 1"
     description:
       type: string
-      example: "Task 1 description"
+      example: "Descrição da tarefa 1"
     status:
       type: string
-      enum:
-        - BACKLOG
-        - TO_DO
-        - IN_PROGRESS
-        - TESTING
-        - DONE
-      example: "TO_DO"
+      enum: [BACKLOG, TO_DO, IN_PROGRESS, TESTING, DONE]
+    priority:
+      type: string
+      enum: [LOW, MEDIUM, HIGH]
+    dueDate:
+      type: string
+      format: date
     accountId:
       type: integer
-      example: 1
-  required:
-    - title
-    - description
-    - status
-    - accountId
+  required: [title, description, status, accountId]
 
 TaskResponse:
   type: object
@@ -39,13 +34,13 @@ TaskResponse:
       example: "Task 1 description"
     status:
       type: string
-      enum:
-        - BACKLOG
-        - TO_DO
-        - IN_PROGRESS
-        - TESTING
-        - DONE
-      example: "TO_DO"
+      enum: [BACKLOG, TO_DO, IN_PROGRESS, TESTING, DONE]
+    priority:
+      type: string
+      enum: [LOW, MEDIUM, HIGH]
+    dueDate:
+      type: string
+      format: date
     accountId:
       type: integer
       example: 1
