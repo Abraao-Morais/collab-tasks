@@ -1,21 +1,16 @@
 package com.example.collabtaskapi.adapters.outbound.persistence.entities;
 
 import com.example.collabtaskapi.domain.Task;
+import com.example.collabtaskapi.domain.enums.Priority;
 import com.example.collabtaskapi.domain.enums.Status;
-import jakarta.persistence.Table;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.FetchType;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Builder;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.EqualsAndHashCode;
+
+import java.time.LocalDate;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
@@ -37,6 +32,12 @@ public class JpaTaskEntity {
     @Enumerated(EnumType.STRING)
     private Status status;
 
+    @Enumerated(EnumType.STRING)
+    private Priority priority;
+
+    @Column(name = "due_date")
+    private LocalDate dueDate;
+
     private String description;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -49,6 +50,8 @@ public class JpaTaskEntity {
         this.status = task.getStatus();
         this.description = task.getDescription();
         this.account = accountEntity;
+        this.priority = task.getPriority();
+        this.dueDate = task.getDueDate();
     }
 
 }

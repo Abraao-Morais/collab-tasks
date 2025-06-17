@@ -1,7 +1,9 @@
 package com.example.collabtaskapi.adapters.inbound.rest;
 
 import com.example.collabtaskapi.application.ports.inbound.RestTaskUseCase;
+import com.example.collabtaskapi.application.ports.inbound.SecurityTokenUseCase;
 import com.example.collabtaskapi.application.usecases.RestTaskUseCaseImpl;
+import com.example.collabtaskapi.application.usecases.SecurityTokenUseCaseImpl;
 import com.example.collabtaskapi.controllers.TaskApiController;
 import com.example.collabtaskapi.controllers.TaskApiDelegate;
 import com.example.collabtaskapi.dtos.TaskRequest;
@@ -27,16 +29,10 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(TaskApiController.class)
 @Import(TaskApiDelegateImplTest.TestConfig.class)
@@ -44,6 +40,12 @@ public class TaskApiDelegateImplTest {
 
     @TestConfiguration
     static class TestConfig {
+
+        @Bean
+        public SecurityTokenUseCase securityTokenUseCase(){
+            return Mockito.mock(SecurityTokenUseCaseImpl.class);
+        }
+
         @Bean
         public RestTaskUseCase restTaskUseCase() {
             return Mockito.mock(RestTaskUseCaseImpl.class);
@@ -115,31 +117,57 @@ public class TaskApiDelegateImplTest {
     }
 
     @Test
-    void shouldReturnTasksByAssignedUser() throws Exception {
-        when(restTaskUseCase.findAllByAccountId(1)).thenReturn(List.of(taskResponse));
+    void shouldReturnTasksByFilters() throws Exception {
+        when(restTaskUseCase.listTasksByFilters(eq(1), any(), any(), any()))
+                .thenReturn(List.of(taskResponse));
 
-        mockMvc.perform(get(BASE_PATH).param("assignedTo", "1"))
+        mockMvc.perform(get(BASE_PATH + "/assignedTo")
+                        .param("assignedTo", "1")
+                        .param("status", "TO_DO")
+                        .param("priority", "HIGH")
+                        .param("dueBefore", "2025-06-25"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].accountId").value(1));
+                .andExpect(jsonPath("$[0].title").value("Tarefa 1"));
     }
 
     @Test
-    void shouldReturnEmptyListWhenNoTasksForUser() throws Exception {
-        when(restTaskUseCase.findAllByAccountId(2)).thenReturn(List.of());
+    void shouldReturnNoContentWhenGetAllTasksReturnsEmptyList() throws Exception {
+        when(restTaskUseCase.listAllTasks()).thenReturn(List.of());
 
-        mockMvc.perform(get(BASE_PATH).param("assignedTo", "2"))
+        mockMvc.perform(get(BASE_PATH + "/all"))
+                .andExpect(status().isNoContent());
+    }
+
+
+    @Test
+    void shouldReturnNoContentWhenNoTasksMatchFilters() throws Exception {
+        when(restTaskUseCase.listTasksByFilters(eq(2), any(), any(), any()))
+                .thenReturn(List.of());
+
+        mockMvc.perform(get(BASE_PATH + "/assignedTo")
+                        .param("assignedTo", "2"))
                 .andExpect(status().isNoContent());
     }
 
     @Test
-    void shouldReturn400WhenMissingAssignedToParam() throws Exception {
-        mockMvc.perform(get(BASE_PATH))
+    void shouldReturn400WhenInvalidStatusIsProvided() throws Exception {
+        mockMvc.perform(get(BASE_PATH + "/assignedTo")
+                        .param("assignedTo", "1")
+                        .param("status", "INVALID_STATUS"))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void shouldReturn400WhenInvalidPriorityIsProvided() throws Exception {
+        mockMvc.perform(get(BASE_PATH + "/assignedTo")
+                        .param("assignedTo", "1")
+                        .param("priority", "INVALID_PRIORITY"))
                 .andExpect(status().isBadRequest());
     }
 
     @Test
     void shouldUpdateTask() throws Exception {
-        when(restTaskUseCase.updateTaskById(Mockito.eq(VALID_ID), any(TaskRequest.class))).thenReturn(taskResponse);
+        when(restTaskUseCase.updateTaskById(eq(VALID_ID), any(TaskRequest.class))).thenReturn(taskResponse);
 
         mockMvc.perform(put(BASE_PATH + "/" + VALID_ID)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -150,7 +178,7 @@ public class TaskApiDelegateImplTest {
 
     @Test
     void shouldReturn404WhenUpdateNonExistingTask() throws Exception {
-        when(restTaskUseCase.updateTaskById(Mockito.eq(INVALID_ID), any(TaskRequest.class)))
+        when(restTaskUseCase.updateTaskById(eq(INVALID_ID), any(TaskRequest.class)))
                 .thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         mockMvc.perform(put(BASE_PATH + "/" + INVALID_ID)
@@ -167,7 +195,7 @@ public class TaskApiDelegateImplTest {
 
     @Test
     void shouldReturn404WhenDeleteNonExistingTask() throws Exception {
-        Mockito.doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND)).when(restTaskUseCase).deleteTaskByID(INVALID_ID);
+        Mockito.doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND)).when(restTaskUseCase).deleteTaskById(INVALID_ID);
 
         mockMvc.perform(delete(BASE_PATH + "/" + INVALID_ID))
                 .andExpect(status().isNotFound());
@@ -192,4 +220,5 @@ public class TaskApiDelegateImplTest {
                         .content(objectMapper.writeValueAsString(taskRequest)))
                 .andExpect(status().isBadRequest());
     }
+
 }

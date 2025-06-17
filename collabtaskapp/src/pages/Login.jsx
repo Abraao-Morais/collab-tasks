@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { NavLink, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import { FaLock, FaUser } from "react-icons/fa";
 import { login } from "../services/AuthService";
 import Input from "../components/Input";
@@ -21,10 +21,10 @@ export default function Login() {
     event.preventDefault();
 
     try {
-      console.log(input)
+      console.log(input);
       const token = await login(input);
-      console.log(token)
-      localStorage.setItem('token', token);
+      console.log(token);
+      localStorage.setItem("token", token);
       navigate("/home");
     } catch (error) {
       console.log(error.message);
@@ -63,15 +63,15 @@ export default function Login() {
             <FaLock className="icon" />
           </div>
 
-          <Button type="submit">Login</Button>
+          <div className="remember">
+            <input type="checkbox" placeholder="Remember me" />
+          </div>
+
+          <Button className="button" type="submit">
+            Login
+          </Button>
 
           {error && <span className="error">{error}</span>}
-
-          <div className="register">
-            <p>
-              Don't have an account? <NavLink to="/register">Register</NavLink>
-            </p>
-          </div>
         </form>
       </section>
     </main>

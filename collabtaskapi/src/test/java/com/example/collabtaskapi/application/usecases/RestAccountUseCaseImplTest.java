@@ -107,7 +107,7 @@ public class RestAccountUseCaseImplTest {
 
         restAccountUseCase.deleteAccountByID(1);
 
-        assertFalse(account.getIsActive());
+        assertFalse(account.isActive());
         verify(repositoryAccountPort).save(account);
     }
 

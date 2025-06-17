@@ -98,27 +98,4 @@ public class RepositoryAccountPortImplTest {
         assertEquals(account.getName(), result.getName());
     }
 
-    @Test
-    void shouldDeleteAccountWhenExists() {
-        JpaAccountEntity entity = AccountFactory.jpaAccountEntityFactory();
-
-        when(jpaAccountRepository.findById(entity.getId())).thenReturn(Optional.of(entity));
-
-        repositoryAccountPort.delete(entity.getId());
-
-        verify(jpaAccountRepository, times(1)).delete(entity);
-    }
-
-    @Test
-    void shouldThrowExceptionWhenDeleteAccountNotFound() {
-        Integer id = 999;
-
-        when(jpaAccountRepository.findById(id)).thenReturn(Optional.empty());
-
-        EntityNotFoundException thrown = assertThrows(EntityNotFoundException.class, () -> {
-            repositoryAccountPort.delete(id);
-        });
-
-        assertEquals("Account not found with id " + id, thrown.getMessage());
-    }
 }

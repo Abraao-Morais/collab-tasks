@@ -51,4 +51,5 @@ public class AccountApiDelegateImpl implements AccountApiDelegate {
         AccountResponse accountResponse = restAccountUseCase.updateAccountByID(id, accountRequest);
         return ResponseEntity.ok(accountResponse);
     }
+
 }

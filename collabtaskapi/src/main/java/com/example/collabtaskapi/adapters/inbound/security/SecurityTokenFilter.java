@@ -44,4 +44,5 @@ public class SecurityTokenFilter extends OncePerRequestFilter {
         if (nonNull(header) && header.startsWith("Bearer ")) return header.substring(7);
         return null;
     }
+
 }

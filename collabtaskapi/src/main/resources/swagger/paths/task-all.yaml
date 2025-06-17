@@ -1,0 +1,14 @@
+get:
+  tags:
+    - tasks
+  summary: List all tasks
+  operationId: getAllTasks
+  responses:
+    '200':
+      description: List all tasks
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '../schemas/task.yaml#/TaskResponse'

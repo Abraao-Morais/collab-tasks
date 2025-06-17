@@ -1,0 +1,42 @@
+get:
+  tags:
+    - task
+  summary: List tasks assigned to a user with optional filters
+  operationId: getTasksByAssignedTo
+  parameters:
+    - in: query
+      name: assignedTo
+      required: true
+      schema:
+        type: integer
+      description: ID of the user to whom the task is assigned
+    - in: query
+      name: status
+      required: false
+      schema:
+        type: string
+        enum: [BACKLOG, TO_DO, IN_PROGRESS, TESTING, DONE]
+      description: Filter tasks by status
+    - in: query
+      name: priority
+      required: false
+      schema:
+        type: string
+        enum: [LOW, MEDIUM, HIGH]
+      description: Filter tasks by priority
+    - in: query
+      name: dueBefore
+      required: false
+      schema:
+        type: string
+        format: date
+      description: Filter tasks with due date
+  responses:
+    '200':
+      description: Filtered task list
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '../schemas/task.yaml#/TaskResponse'

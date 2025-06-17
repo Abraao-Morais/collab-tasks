@@ -27,7 +27,7 @@ public class AccountMapperTest {
         assertEquals(entity.getName(), account.getName());
         assertEquals(entity.getEmail(), account.getEmail());
         assertEquals(entity.getProfilePhotoUrl(), account.getProfilePhotoUrl());
-        assertEquals(entity.isActive(), account.getIsActive());
+        assertEquals(entity.isActive(), account.isActive());
     }
 
     @Test
@@ -41,7 +41,7 @@ public class AccountMapperTest {
         assertEquals(entity.getName(), account.getName());
         assertEquals(entity.getEmail(), account.getEmail());
         assertEquals(entity.getProfilePhotoUrl(), account.getProfilePhotoUrl());
-        assertEquals(entity.isActive(), account.getIsActive());
+        assertEquals(entity.isActive(), account.isActive());
     }
 
     @Test

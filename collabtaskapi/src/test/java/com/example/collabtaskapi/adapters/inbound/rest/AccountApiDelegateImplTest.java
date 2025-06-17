@@ -1,7 +1,9 @@
 package com.example.collabtaskapi.adapters.inbound.rest;
 
 import com.example.collabtaskapi.application.ports.inbound.RestAccountUseCase;
+import com.example.collabtaskapi.application.ports.inbound.SecurityTokenUseCase;
 import com.example.collabtaskapi.application.usecases.RestAccountUseCaseImpl;
+import com.example.collabtaskapi.application.usecases.SecurityTokenUseCaseImpl;
 import com.example.collabtaskapi.controllers.AccountApiController;
 import com.example.collabtaskapi.controllers.AccountApiDelegate;
 import com.example.collabtaskapi.dtos.AccountRequest;
@@ -21,6 +23,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.http.HttpStatus;
@@ -38,12 +41,19 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@ActiveProfiles("test")
 @WebMvcTest(AccountApiController.class)
 @Import(AccountApiDelegateImplTest.TestConfig.class)
 public class AccountApiDelegateImplTest {
 
     @TestConfiguration
     static class TestConfig {
+
+        @Bean
+        public SecurityTokenUseCase securityTokenUseCase(){
+            return Mockito.mock(SecurityTokenUseCaseImpl.class);
+        }
+
         @Bean
         public RestAccountUseCaseImpl restAccountUseCase() {
             return Mockito.mock(RestAccountUseCaseImpl.class);
@@ -167,4 +177,5 @@ public class AccountApiDelegateImplTest {
         mockMvc.perform(delete(BASE_PATH + "/" + INVALID_ID))
                 .andExpect(status().isNotFound());
     }
+
 }
