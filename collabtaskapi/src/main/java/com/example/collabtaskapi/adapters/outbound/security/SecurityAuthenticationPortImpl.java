@@ -20,4 +20,5 @@ public class SecurityAuthenticationPortImpl implements SecurityAuthenticationPor
         Authentication authentication = new UsernamePasswordAuthenticationToken(username, password);
         authenticationManager.authenticate(authentication);
     }
+
 }

@@ -49,6 +49,7 @@ public class RepositoryAccountPortImplTest {
 
         assertTrue(result.isPresent());
         assertEquals(account, result.get());
+        assertEquals(entity.getTokens().get(0).getId(), result.get().getTokens().get(0).getId());
     }
 
     @Test

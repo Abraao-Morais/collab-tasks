@@ -11,20 +11,14 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Table;
 import jakarta.persistence.Column;
 import lombok.Data;
-import lombok.Builder;
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import lombok.EqualsAndHashCode;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Data
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "token")
-@EqualsAndHashCode(of = "id")
 public class JpaTokenEntity {
 
     @Id

@@ -5,6 +5,7 @@ import com.example.collabtaskapi.domain.Account;
 import com.example.collabtaskapi.domain.enums.Priority;
 import com.example.collabtaskapi.domain.enums.RoleType;
 import com.example.collabtaskapi.domain.enums.Status;
+import com.example.collabtaskapi.factory.AccountFactory;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -15,7 +16,7 @@ public class JpaTaskEntityTest {
 
     @Test
     public void shouldCreateEntityFromTask() {
-        Account account = new Account(1, "user", "user@example.com", "userPassword", null, RoleType.ADMIN, true);
+        var account = AccountFactory.accountFactory();
         Task task = new Task(10, "Test Task", Status.TO_DO, Priority.MEDIUM,
                 LocalDate.of(2025, 6, 20), "Description", account);
 

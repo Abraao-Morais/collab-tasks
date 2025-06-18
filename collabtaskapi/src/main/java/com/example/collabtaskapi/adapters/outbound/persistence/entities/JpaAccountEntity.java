@@ -54,4 +54,5 @@ public class JpaAccountEntity {
         this.role = account.getRole();
         this.active = account.isActive();
     }
+
 }

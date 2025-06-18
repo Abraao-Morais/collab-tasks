@@ -82,7 +82,7 @@ public class RestAuthUseCaseImplTest {
         when(repositoryAccountPort.findById(1)).thenReturn(Optional.of(account));
         when(repositoryTokenPort.findAllValidTokenByAccountId(1)).thenReturn(List.of(token));
 
-        restAuthUseCase.logout("token123");
+        restAuthUseCase.logout("tokentoken");
 
         assertTrue(token.isRevoked());
         verify(repositoryTokenPort).saveAll(List.of(token));

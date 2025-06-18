@@ -2,11 +2,13 @@ package com.example.collabtaskapi.factory;
 
 import com.example.collabtaskapi.adapters.outbound.persistence.entities.JpaAccountEntity;
 import com.example.collabtaskapi.domain.Account;
+import com.example.collabtaskapi.domain.Token;
 import com.example.collabtaskapi.domain.enums.RoleType;
 import com.example.collabtaskapi.dtos.AccountRequest;
 import com.example.collabtaskapi.dtos.AccountResponse;
 
 import java.net.URI;
+import java.util.List;
 
 public class AccountFactory {
 
@@ -27,6 +29,7 @@ public class AccountFactory {
         entity.setProfilePhotoUrl(String.valueOf(PROFILE_PHOTO_URI));
         entity.setRole(ROLE);
         entity.setActive(IS_ACTIVE);
+        entity.setTokens(List.of(TokenFactory.tokenFactory()));
         return entity;
     }
 
@@ -39,6 +42,7 @@ public class AccountFactory {
         entity.setProfilePhotoUrl(String.valueOf(PROFILE_PHOTO_URI));
         entity.setRole(ROLE);
         entity.setActive(IS_ACTIVE);
+        entity.setTokens(List.of(TokenFactory.jpaTokenEntityFactory()));
         return entity;
     }
 

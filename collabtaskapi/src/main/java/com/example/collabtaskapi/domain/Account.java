@@ -2,6 +2,7 @@ package com.example.collabtaskapi.domain;
 
 import com.example.collabtaskapi.domain.enums.RoleType;
 
+import java.util.List;
 import java.util.Objects;
 
 public class    Account {
@@ -13,18 +14,9 @@ public class    Account {
     private String profilePhotoUrl;
     private RoleType role;
     private boolean active;
+    private List<Token> tokens;
 
     public Account() {}
-
-    public Account(Integer id, String name, String email, String password, String profilePhotoUrl, RoleType role, boolean active) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.profilePhotoUrl = profilePhotoUrl;
-        this.role = role;
-        this.active = active;
-    }
 
     public Integer getId() {
         return id;
@@ -80,6 +72,14 @@ public class    Account {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public List<Token> getTokens() {
+        return tokens;
+    }
+
+    public void setTokens(List<Token> tokens) {
+        this.tokens = tokens;
     }
 
     @Override

@@ -16,4 +16,5 @@ public class SecurityEncoderPortImpl implements SecurityEncoderPort {
     public String encode(String rawPassword) {
         return passwordEncoder.encode(rawPassword);
     }
+
 }

@@ -7,8 +7,6 @@ import com.example.collabtaskapi.infrastructure.exceptions.EntityNotFoundExcepti
 
 import java.util.List;
 
-import static java.util.Objects.isNull;
-
 public class SecurityTokenUseCaseImpl implements SecurityTokenUseCase {
 
     private final RepositoryTokenPort repositoryTokenPort;

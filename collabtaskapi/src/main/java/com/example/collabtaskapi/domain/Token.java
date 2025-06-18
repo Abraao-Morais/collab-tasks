@@ -12,14 +12,6 @@ public class Token {
 
     public Token(){}
 
-    public Token(Integer id, String token, TokenType tokenType, boolean revoked, Account account) {
-        this.id = id;
-        this.token = token;
-        this.tokenType = tokenType;
-        this.revoked = revoked;
-        this.account = account;
-    }
-
     public Integer getId() {
         return id;
     }
