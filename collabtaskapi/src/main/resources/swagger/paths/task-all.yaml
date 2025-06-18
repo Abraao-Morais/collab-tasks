@@ -1,6 +1,6 @@
 get:
   tags:
-    - tasks
+    - task
   summary: List all tasks
   operationId: getAllTasks
   responses:

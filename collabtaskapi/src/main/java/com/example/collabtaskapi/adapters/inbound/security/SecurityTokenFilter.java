@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.List;
 
 import static java.util.Objects.nonNull;
 
@@ -26,7 +27,7 @@ public class SecurityTokenFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
 
-        if (request.getServletPath().contains("/auth")) {
+        if (securityTokenUseCase.pathIsValid(request.getServletPath())) {
             filterChain.doFilter(request, response);
             return;
         }

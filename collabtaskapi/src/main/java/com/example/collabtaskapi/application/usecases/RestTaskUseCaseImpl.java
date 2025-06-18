@@ -73,10 +73,10 @@ public class RestTaskUseCaseImpl implements RestTaskUseCase {
 
     @Override
     public List<TaskResponse> listTasksByFilters(Integer assignedTo, Status status, Priority priority, LocalDate dueBefore) {
-        LocalDateTime dueBeforePlusOne = null;
-        if (nonNull(dueBefore)) dueBeforePlusOne = dueBefore.plusDays(1).atStartOfDay();
+        LocalDate dueBeforePlusOne = null;
+        if (nonNull(dueBefore)) dueBeforePlusOne = LocalDate.from(dueBefore.plusDays(1).atStartOfDay());
 
-        List<Task> filteredTasks = repositoryTaskPort.findByFilters(assignedTo, status, priority, LocalDate.from(dueBeforePlusOne));
+        List<Task> filteredTasks = repositoryTaskPort.findByFilters(assignedTo, status, priority, dueBeforePlusOne);
         return filteredTasks.stream().map(taskMapper::taskToTaskResponse).toList();
     }
 }
