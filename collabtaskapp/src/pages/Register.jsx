@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { NavLink, useNavigate } from "react-router";
-import { register } from "../services/AuthService";
+import { register } from "../services/AuthenticationService";
 import Input from "../components/Input";
 import Title from "../components/Title";
 import Button from "../components/Button";

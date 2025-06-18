@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { NavLink, useNavigate } from "react-router";
 import { FaLock, FaUser } from "react-icons/fa";
-import { login } from "../services/AuthService";
+import { login } from "../services/AuthenticationService";
 import Input from "../components/Input";
 import Title from "../components/Title";
 import Button from "../components/Button";
