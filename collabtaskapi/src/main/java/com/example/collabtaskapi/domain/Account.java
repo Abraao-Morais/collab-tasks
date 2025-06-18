@@ -90,8 +90,4 @@ public class    Account {
         return active == account.active && Objects.equals(id, account.id) && Objects.equals(name, account.name) && Objects.equals(email, account.email) && Objects.equals(password, account.password) && Objects.equals(profilePhotoUrl, account.profilePhotoUrl) && Objects.equals(role, account.role);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, email, password, profilePhotoUrl, role , active);
-    }
 }

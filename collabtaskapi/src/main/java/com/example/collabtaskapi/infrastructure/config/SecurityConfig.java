@@ -68,7 +68,7 @@ public class SecurityConfig {
                                 "/webjars/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/task/**").hasAnyRole("ADMIN", "USER", "VIEW")
-                        .requestMatchers(HttpMethod.GET, "/account/**").hasAnyRole("ADMIN", "USER")
+                        .requestMatchers(HttpMethod.GET, "/account/**").hasAnyRole("ADMIN", "USER", "VIEW")
                         .requestMatchers(HttpMethod.POST, "/task").hasAnyRole("ADMIN", "USER")
                         .requestMatchers(HttpMethod.POST, "/account").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/**").hasAnyRole("ADMIN", "USER")
