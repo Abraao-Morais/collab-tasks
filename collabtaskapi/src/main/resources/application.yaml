@@ -26,3 +26,13 @@ jwt:
     key: classpath:app.key
   public:
     key: classpath:app.pub
+
+logging:
+  level:
+    root: INFO
+    org.springframework: INFO
+    com.example.collabtaskapi: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %logger{36} - %msg%n"
+  file:
+    name: logs/collabtaskapi.log
