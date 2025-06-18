@@ -15,9 +15,7 @@ public interface TaskMapper {
 
     Task jpaTaskEntityToTask(JpaTaskEntity jpaTaskEntity);
     Task taskRequestToTask(TaskRequest taskRequest);
-    @Mappings({
-            @Mapping(source = "account.id", target = "accountId")
-    })
+    @Mappings({@Mapping(source = "account.id", target = "accountId")})
     TaskResponse taskToTaskResponse(Task task);
     JpaTaskEntity taskTTaskEntity(Task task);
 

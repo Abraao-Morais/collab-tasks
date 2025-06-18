@@ -29,7 +29,6 @@ public class AccountFactory {
         entity.setProfilePhotoUrl(String.valueOf(PROFILE_PHOTO_URI));
         entity.setRole(ROLE);
         entity.setActive(IS_ACTIVE);
-        entity.setTokens(List.of(TokenFactory.tokenFactory()));
         return entity;
     }
 
