@@ -4,10 +4,11 @@ export const PATH = {
   LOGIN: "/auth/login",
   LOGOUT: "/logout",
   REGISTER: "/register",
+  PATH: process.env.REACT_APP_API_URL || "http://localhost:8080"
 };
 
 const api = axios.create({
-  baseURL: "http://localhost:8080",
+  baseURL: PATH.PATH,
 });
 
 export const get = api.get;

@@ -1,0 +1,21 @@
+services:
+  backend:
+    build:
+      context: ./collabtaskapi
+      dockerfile: docker/Dockerfile
+    ports:
+      - "8080:8080"
+    networks:
+      - collab-network
+
+  frontend:
+    build:
+      context: ./collabtaskapp
+      dockerfile: docker/Dockerfile
+    ports:
+      - "3000:80"
+    networks:
+      - collab-network
+
+networks:
+  collab-network:

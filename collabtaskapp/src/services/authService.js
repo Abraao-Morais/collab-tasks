@@ -1,4 +1,4 @@
-import { PATH, post } from "./ApiService";
+import { PATH, post } from "./ApiService.js
 
 export async function login(credentials) {
   const response = await post("http://localhost:8080/auth/login", {
