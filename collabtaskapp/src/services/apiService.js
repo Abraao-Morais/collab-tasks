@@ -1,14 +1,15 @@
 import axios from "axios";
 
+export const API_URL = "http://backend:8080" || "http://localhost:8080";
+
 export const PATH = {
   LOGIN: "/auth/login",
   LOGOUT: "/logout",
   REGISTER: "/register",
-  PATH: process.env.REACT_APP_API_URL || "http://localhost:8080"
 };
 
 const api = axios.create({
-  baseURL: PATH.PATH,
+  baseURL: API_URL,
 });
 
 export const get = api.get;
