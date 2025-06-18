@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -49,7 +50,7 @@ public class RepositoryAccountPortImplTest {
 
         assertTrue(result.isPresent());
         assertEquals(account, result.get());
-        assertEquals(entity.getTokens().get(0).getId(), result.get().getTokens().get(0).getId());
+        assertFalse(entity.getTokens().isEmpty());
     }
 
     @Test

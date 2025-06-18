@@ -1,5 +1,7 @@
 import axios from "axios";
 
+export const API_URL = "http://backend:8080" || "http://localhost:8080";
+
 export const PATH = {
   LOGIN: "/auth/login",
   LOGOUT: "/logout",
@@ -7,7 +9,7 @@ export const PATH = {
 };
 
 const api = axios.create({
-  baseURL: "http://localhost:8080",
+  baseURL: API_URL,
 });
 
 export const get = api.get;

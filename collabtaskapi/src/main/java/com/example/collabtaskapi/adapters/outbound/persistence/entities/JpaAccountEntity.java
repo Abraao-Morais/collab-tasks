@@ -2,6 +2,7 @@ package com.example.collabtaskapi.adapters.outbound.persistence.entities;
 
 import com.example.collabtaskapi.domain.Account;
 import com.example.collabtaskapi.domain.enums.RoleType;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Table;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
