@@ -138,6 +138,15 @@ public class TaskApiDelegateImplTest {
                 .andExpect(status().isNoContent());
     }
 
+    @Test
+    void shouldReturnTaskListWhenGetAllTasksReturnsTaskList() throws Exception {
+        when(restTaskUseCase.listAllTasks()).thenReturn(List.of(TaskFactory.taskResponseFactory(), TaskFactory.taskResponseFactory()));
+
+        mockMvc.perform(get(BASE_PATH + "/all"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].title").value("Tarefa 1"));
+    }
+
 
     @Test
     void shouldReturnNoContentWhenNoTasksMatchFilters() throws Exception {
